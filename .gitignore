@@ -58,8 +58,7 @@ yarn.lock
 # dotenv environment variables file
 .env
 
-# VS Code environment
-.vscode
-
 # Compile javascript
 build
+**/*.spec.js
+**/*.spec.js.map
