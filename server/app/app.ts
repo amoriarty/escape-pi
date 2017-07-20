@@ -9,7 +9,7 @@ let io = ioPkg(http);
 
 app.get('/', (req, res) => {
 	if (process.env.NODE_ENV == "development") console.log("GET /");
-	res.sendFile(path.resolve("public/index.html"));
+	res.sendFile(path.resolve("public/src/index.html"));
 });
 
 io.on('connection', (socket) => {

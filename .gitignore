@@ -62,3 +62,48 @@ yarn.lock
 build
 **/*.spec.js
 **/*.spec.js.map
+
+# Angular files
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/server/public/dist
+/server/public/tmp
+/server/public/out-tsc
+
+# dependencies
+/server/public/node_modules
+
+# IDEs and editors
+/server/public/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/server/public/.sass-cache
+/server/public/connect.lock
+/server/public/coverage
+/server/public/libpeerconnection.log
+npm-debug.log
+testem.log
+/server/public/typings
+
+# e2e
+/server/public/e2e/*.js
+/server/public/e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db
+
