@@ -9,14 +9,16 @@
 			"request": "launch",
 			"name": "Server",
 			"program": "${workspaceRoot}/server/app/app.ts",
-			"stopOnEntry": true,
+			"stopOnEntry": false,
 			"args": [],
 			"cwd": "${workspaceRoot}/server",
 			"sourceMaps": true,
 			"runtimeExecutable": null,
 			"preLaunchTask": "Typescript",
 			"env": {
-				"NODE_ENV": "development"
+				"NODE_ENV": "development",
+				"SERVER_PORT": 8080,
+				"SERVER_BASEURL": "/"
 			},
 			"outFiles": [
 				"${workspaceRoot}/server/build/app.js"

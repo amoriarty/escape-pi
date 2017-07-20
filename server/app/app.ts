@@ -1,8 +1,22 @@
-import * as http		from 'http';
+import * as httpPkg		from 'http';
 import * as express		from 'express';
+import * as ioPkg		from 'socket.io';
+import * as path		from 'path';
 
 let app = express();
+let http = httpPkg.createServer(app);
+let io = ioPkg(http);
 
-http.createServer(app).listen(8080, () => {
-	console.log("server listening");
+app.get('/', (req, res) => {
+	if (process.env.NODE_ENV == "development") console.log("GET /");
+	res.sendFile(path.resolve("public/index.html"));
+});
+
+io.on('connection', (socket) => {
+	if (process.env.NODE_ENV == "development") console.log("Socket connected");
+});
+
+http.listen(process.env.SERVER_PORT, () => {
+	if (process.env.NODE_ENV == "development")
+		console.log("server listening on port " + process.env.SERVER_PORT);
 });
