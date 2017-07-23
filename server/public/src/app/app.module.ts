@@ -6,11 +6,15 @@ import 'hammerjs';
 import { MaterialModule } from './material.module';
 import { AppComponent } from './app.component';
 import { PlayerComponent } from './player/player.component';
+import { ProjectorComponent } from './projector/projector.component';
+import { LedComponent } from './led/led.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlayerComponent
+    PlayerComponent,
+    ProjectorComponent,
+    LedComponent
   ],
   imports: [
     BrowserModule,
