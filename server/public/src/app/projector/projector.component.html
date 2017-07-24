@@ -1,12 +1,12 @@
-<div class="title">{{name}}</div>
+<div class="title">{{ name }}</div>
 <div>
   <div class="status">
     Connected:
-    <app-led></app-led>
+    <app-led [on]="true"></app-led>
   </div>
   <div class="status">
     Now Playing:
-    <app-led></app-led>
+    <app-led [on]="false"></app-led>
   </div>
 </div>
 <div>
