@@ -15,14 +15,13 @@ export class SocketService {
    */
   constructor() {
     this.socket = io(this.url);
-    this.socket.on('whoareyou', this.whoAreYou);
+    this.socket.on('whoareyou', () => this.whoAreYou());
   }
 
   /**
    * Respond server who are you asking.
    */
   private whoAreYou() {
-    console.log("whoareyou"); // DEBUG PLEASE DELETE ME
     this.socket.emit('iam', {
       type: 'client'
     });
@@ -35,8 +34,9 @@ export class SocketService {
    */
   getPiStatue(name: String): Observable<{}> {
     let observable = new Observable(observer => {
-      this.socket.on('pi_status', (data: PiStatusInterface) => {
-        console.log("data ", data);
+      this.socket.on(name, (data: PiStatusInterface) => {
+        console.log(name, data); // DEBUG PLEASE DELETE ME
+        observer.next(data);
       });
     });
 
