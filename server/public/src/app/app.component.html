@@ -1,4 +1,4 @@
-<!--The content below is only a placeholder and can be replaced.-->
+<!-- Top navigation bar. -->
 <md-toolbar color="primary">
   <span>{{ title }}</span>
   <span class="fill-space"></span>
@@ -8,10 +8,12 @@
   </span>
 </md-toolbar>
 
+<!-- Projectors grid -->
 <md-grid-list cols="3" rowHeight="2:1">
   <md-grid-tile><app-projector name="Yharnam"></app-projector></md-grid-tile>
   <md-grid-tile><app-projector name="Lothric"></app-projector></md-grid-tile>
   <md-grid-tile><app-projector name="Boletaria"></app-projector></md-grid-tile>
 </md-grid-list>
 
+<!-- Add playlist button -->
 <button md-fab color="primary"><md-icon>add</md-icon></button>

@@ -1,4 +1,7 @@
+<!-- Projector name -->
 <div class="title">{{ name }}</div>
+
+<!-- Status contents. -->
 <div>
   <div class="status">
     Connected:
@@ -9,6 +12,8 @@
     <app-led [on]="false"></app-led>
   </div>
 </div>
+
+<!-- Player contents. Select video and control it. -->
 <div>
   <md-select placeholder="Video"></md-select>
   <app-player></app-player>
