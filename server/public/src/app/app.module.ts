@@ -9,7 +9,7 @@ import { PlayerComponent } from './player/player.component';
 import { ProjectorComponent } from './projector/projector.component';
 import { LedComponent } from './led/led.component';
 
-import { SocketService } from './socket.service';
+import { SocketService } from './socket/socket.service';
 
 @NgModule({
   declarations: [
