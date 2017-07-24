@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
 	if (process.env.NODE_ENV == "development") console.log("Socket connected");
+	socket.emit('whoareyou');
 });
 
 http.listen(process.env.SERVER_PORT, () => {

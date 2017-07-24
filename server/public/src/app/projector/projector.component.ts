@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import { SocketService } from '../socket.service';
+
 @Component({
   selector: 'app-projector',
   templateUrl: './projector.component.html',
@@ -7,7 +9,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ProjectorComponent implements OnInit {
   @Input() name: String;
+  connection;
+  status;
 
-  constructor() { }
-  ngOnInit() { }
+  constructor(private socketService: SocketService) { }
+
+  ngOnInit() {
+    this.connection = this.socketService.getPiStatue(this.name).subscribe((status) => {
+      this.status = status;
+    })
+  }
 }

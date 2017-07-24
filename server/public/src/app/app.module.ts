@@ -9,6 +9,8 @@ import { PlayerComponent } from './player/player.component';
 import { ProjectorComponent } from './projector/projector.component';
 import { LedComponent } from './led/led.component';
 
+import { SocketService } from './socket.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +23,7 @@ import { LedComponent } from './led/led.component';
     BrowserAnimationsModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [ SocketService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
