@@ -3,12 +3,12 @@ import * as express		from 'express';
 import * as ioPkg		from 'socket.io';
 import * as path		from 'path';
 
-import Socket from './socket/socket.class';
+import IO from './io/io.class';
 
 let app = express();
 let http = httpPkg.createServer(app);
-let io = ioPkg(http);
-let socket = new Socket(io);
+let io = ioPkg(http, { serveClient: false });
+let socket = new IO(io);
 
 /**
  * Express configuration

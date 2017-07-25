@@ -1,37 +1,12 @@
-import { SockTypeInterface } from './socket.interface';
-import Client from '../client/client.class';
-import Pi from '../pi/pi.class';
-
 /**
  * Socket class handle every transaction that as to be done via socket.
  */
 export default class Socket {
-	client: Client;
-	pis: Pi[] = [ ];
-
 	/**
-	 * @param io An instance of io from socket.io
+	 * @param socket An instance of io from socket.io
+	 * @param disconnect Callback that be called at socket disconnection
 	 */
-	constructor(io) {
-		io.on('connection', (socket) => { this.connection(socket) });
-	}
-
-	/**
-	 * This function handle a websocket connection.
-	 * @param socket New socket connected.
-	 */
-	private connection(socket) {
-		socket.emit('whoareyou');
-		socket.on('iam', (data: SockTypeInterface) => {
-			if (data.type == "client") this.client = new Client(socket);
-			else if (data.type == "pi")
-				this.pis.push(new Pi(data.name, socket, (name) => { 
-					this.piDisconnection(name);
-				}));
-		});
-	}
-
-	private piDisconnection(name) {
-		if (process.env.NODE_ENV == "development") console.log("socket " + name + " disconnected");
+	constructor(private socket, private disconnect: (instance: Socket) => void) {
+		socket.on('disconnect', (reason) => { this.disconnect(this); });
 	}
 }
