@@ -36,7 +36,9 @@
 			"runtimeExecutable": null,
 			"preLaunchTask": "TypescriptClient",
 			"env": {
-				"NODE_ENV": "development"
+				"NODE_ENV": "development",
+				"SOCKET_URL": "http://localhost:8080",
+				"PI_NAME": "yharnam"
 			},
 			"outFiles": [
 				"${workspaceRoot}/client/build/app.js"

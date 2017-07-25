@@ -6,7 +6,7 @@ import { PiStatusInterface } from './socket.interface';
 
 @Injectable()
 export class SocketService {
-  private url = "http://localhost:8080"
+  private url = "http://localhost:8080"; // IT'S ANNOYING.
   private socket;
 
   /**
