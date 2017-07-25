@@ -14,7 +14,7 @@
 			"cwd": "${workspaceRoot}/server",
 			"sourceMaps": true,
 			"runtimeExecutable": null,
-			"preLaunchTask": "Typescript",
+			"preLaunchTask": "TypescriptServer",
 			"env": {
 				"NODE_ENV": "development",
 				"SERVER_PORT": 8080,
@@ -22,6 +22,24 @@
 			},
 			"outFiles": [
 				"${workspaceRoot}/server/build/app.js"
+			]
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Client",
+			"program": "${workspaceRoot}/client/app/app.ts",
+			"stopOnEntry": false,
+			"args": [],
+			"cwd": "${workspaceRoot}/client",
+			"sourceMaps": true,
+			"runtimeExecutable": null,
+			"preLaunchTask": "TypescriptClient",
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"outFiles": [
+				"${workspaceRoot}/client/build/app.js"
 			]
 		},
 		{

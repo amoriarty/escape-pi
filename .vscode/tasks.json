@@ -4,13 +4,21 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"taskName": "Typescript",
+			"taskName": "TypescriptServer",
 			"command": "tsc",
 			"args": [
 				"-p",
 				"server"
 			],
 			"type": "shell"
+		},
+		{
+			"taskName": "TypescriptClient",
+			"command": "tsc",
+			"args": [
+				"-p",
+				"client"
+			]
 		},
 		{
 			"taskName": "TypescriptMocha",

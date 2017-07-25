@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "rootDir": "app",
+		"outDir": "build",
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+        "removeComments": true,
+        "sourceMap": true,
+		"pretty": true
+    },
+    "include": [
+        "app/**/*",
+		"typings/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}
