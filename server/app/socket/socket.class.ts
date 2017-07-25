@@ -24,7 +24,14 @@ export default class Socket {
 		socket.emit('whoareyou');
 		socket.on('iam', (data: SockTypeInterface) => {
 			if (data.type == "client") this.client = new Client(socket);
-			else if (data.type == "pi") this.pis.push(new Pi(data.name, socket));
+			else if (data.type == "pi")
+				this.pis.push(new Pi(data.name, socket, (name) => { 
+					this.piDisconnection(name);
+				}));
 		});
+	}
+
+	private piDisconnection(name) {
+		if (process.env.NODE_ENV == "development") console.log("socket " + name + " disconnected");
 	}
 }
