@@ -13,7 +13,7 @@ export default class IO {
 	 * @param io An socket.io instance.
 	 */
 	constructor (private io) {
-		io.on('connection', (socket) => { this.connection(socket) })
+		io.on('connection', (socket) => { this.connection(socket); })
 	}
 
 	/**
