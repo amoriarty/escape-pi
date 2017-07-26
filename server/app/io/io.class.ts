@@ -12,7 +12,7 @@ export default class IO {
 	/**
 	 * @param io An socket.io instance.
 	 */
-	constructor (private io) {
+	constructor(private io) {
 		io.on('connection', (socket) => { this.connection(socket); })
 	}
 
@@ -23,14 +23,17 @@ export default class IO {
 	private connection(socket) {
 		socket.emit('whoareyou');
 		socket.on('iam', (data: SockTypeInterface) => {
-			if (data.type == "client")
-				this.client = new Client(socket, (instance) => {
-					this.clientDisconnect(instance);
-				});
-			else if (data.type == "pi")
-				this.pis.push(new Pi(data.name, socket, (instance) => {
-					this.piDisconnect(instance);
-				}));
+			if (data.type == "client") {
+				this.client = new Client(socket);
+				this.client.disconnect = (instance) => { this.clientDisconnect(instance); };
+			}
+			else if (data.type == "pi") {
+				let pi = new Pi(data.name, socket);
+				
+				pi.disconnect = (instance) => { this.piDisconnect(instance as Pi); };
+				pi.statusChange = (instance) => { this.piStatusChange(instance); };
+				this.pis.push(pi);
+			}
 		});
 	}
 
@@ -55,5 +58,14 @@ export default class IO {
 		if (process.env.NODE_ENV == "development")
 			console.log("pi " + instance.name + " disconnect");
 		delete this.pis[index];
+	}
+
+	/**
+	 * Function call when a raspberry pi change his status.
+	 * @param instance Pi instance called when 
+	 */
+	private piStatusChange(instance: Pi) {
+		if (process.env.NODE_ENV == "development")
+			console.log(instance.name, "change his status");
 	}
 }

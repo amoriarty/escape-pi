@@ -1,20 +1,30 @@
-import * as ioPkg from 'socket.io-client';
+import * as io from 'socket.io-client';
+import { SockTypeInterface } from './socket.interface';
+import { PiStatusInterface } from './pi.interface';
 
-let io = ioPkg(process.env.SOCKET_URL);
+let socket = io(process.env.SOCKET_URL);
+let status: PiStatusInterface = {
+	name: 'yharnam',
+	connected: true,
+	playing: false
+};
 
 /**
  * On socket connection.
  */
-io.on('connect', () => {
+socket.on('connect', () => {
 	if (process.env.NODE_ENV == "development") console.log("socket connected");
 });
 
 /**
  * When server ask who am i.
  */
-io.on('whoareyou', () => {
-	io.emit('iam', {
+socket.on('whoareyou', () => {
+	let me: SockTypeInterface = {
 		type: "pi",
 		name: process.env.PI_NAME
-	})
+	};
+
+	socket.emit('iam', me);
+	socket.emit('status', status);
 });

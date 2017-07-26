@@ -7,7 +7,7 @@ export default class Client extends Socket {
 	/**
 	 * @param socket Instance of socket.io socket of the angular client.
 	 */
-	constructor(socket, disconnect) {
-		super(socket, disconnect);
+	constructor(socket) {
+		super(socket);
 	}
 }
