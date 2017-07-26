@@ -5,11 +5,11 @@
 <div>
   <div class="status">
     Connected:
-    <app-led [on]="true"></app-led>
+    <app-led [on]="status.connected"></app-led>
   </div>
   <div class="status">
     Now Playing:
-    <app-led [on]="false"></app-led>
+    <app-led [on]="status.playing"></app-led>
   </div>
 </div>
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 import * as io from 'socket.io-client';
 
 import { SockTypeInterface } from './socket.interface';
@@ -35,10 +36,10 @@ export class SocketService {
    * pis projector status.
    * @param name Name of pi projector.
    */
-  getPiStatue(name: String): Observable<{}> {
-    let observable = new Observable(observer => {
+  getPiStatue(name: String): Observable<PiStatusInterface> {
+    let observable = new Observable((observer: Observer<PiStatusInterface>) => {
       this.socket.on('status', (data: PiStatusInterface) => {
-        if (data.name == name)
+        if (data.name == name.toLowerCase())
           observer.next(data);
       });
     });
