@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
-import { PiStatusInterface } from './socket.interface';
+import { SockTypeInterface } from './socket.interface';
+import { PiStatusInterface } from '../projector/projector.interface';
 
 @Injectable()
 export class SocketService {
@@ -15,16 +16,18 @@ export class SocketService {
    */
   constructor() {
     this.socket = io(this.url);
-    this.socket.on('whoareyou', () => this.whoAreYou());
+    this.socket.on('whoareyou', () => { this.whoAreYou(); });
   }
 
   /**
    * Respond server who are you asking.
    */
   private whoAreYou() {
-    this.socket.emit('iam', {
-      type: 'client'
-    });
+    let me: SockTypeInterface = {
+      type: "client"
+    };
+
+    this.socket.emit('iam', me);
   }
 
   /**
@@ -34,9 +37,9 @@ export class SocketService {
    */
   getPiStatue(name: String): Observable<{}> {
     let observable = new Observable(observer => {
-      this.socket.on(name, (data: PiStatusInterface) => {
-        console.log(name, data); // DEBUG PLEASE DELETE ME
-        observer.next(data);
+      this.socket.on('status', (data: PiStatusInterface) => {
+        if (data.name == name)
+          observer.next(data);
       });
     });
 

@@ -1,8 +1,7 @@
 /**
- * Response interface from sever concerning Pi status.
+ * Interface for response by client websocket.
  */
-export interface PiStatusInterface {
-  name: String,
-  connected: Boolean,
-  playing: Boolean
+export interface SockTypeInterface {
+  type: String,
+  name?: String
 }

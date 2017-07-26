@@ -20,6 +20,6 @@ export class ProjectorComponent implements OnInit {
   ngOnInit() {
     this.connection = this.socketService.getPiStatue(this.name).subscribe((status) => {
       this.status = status;
-    })
+    });
   }
 }

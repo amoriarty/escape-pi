@@ -25,7 +25,7 @@ export default class IO {
 		socket.on('iam', (data: SockTypeInterface) => {
 			if (data.type == "client") {
 				this.client = new Client(socket);
-				this.client.disconnect = (instance) => { this.clientDisconnect(instance); };
+				this.client.disconnect = (instance) => { this.clientDisconnect(instance as Client); };
 			}
 			else if (data.type == "pi") {
 				let pi = new Pi(data.name, socket);
@@ -67,5 +67,7 @@ export default class IO {
 	private piStatusChange(instance: Pi) {
 		if (process.env.NODE_ENV == "development")
 			console.log(instance.name, "change his status");
+		if (this.client)
+			this.client.piStatusChange(instance);
 	}
 }
