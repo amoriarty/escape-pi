@@ -26,6 +26,7 @@ export default class IO {
 			if (data.type == "client") {
 				this.client = new Client(socket);
 				this.client.disconnect = (instance) => { this.clientDisconnect(instance as Client); };
+				this.pis.forEach((item: Pi) => { this.piStatusChange(item); });
 			}
 			else if (data.type == "pi") {
 				let pi = new Pi(data.name, socket);
