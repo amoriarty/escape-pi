@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-player',
@@ -6,6 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit {
+  @Output() onCommand: EventEmitter<String> = new EventEmitter();
+
   constructor() { }
   ngOnInit() { }
+
+  play(): void { this.onCommand.emit("play"); }
+  pause(): void { this.onCommand.emit("pause"); }
+  stop(): void { this.onCommand.emit("stop"); }
 }

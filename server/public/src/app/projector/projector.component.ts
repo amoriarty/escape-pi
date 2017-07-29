@@ -14,7 +14,7 @@ export class ProjectorComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   status: PiStatusInterface = null;
 
-  constructor(private socketService: SocketService) {
+  constructor(private socket: SocketService) {
     this.status = {
       name: this.name,
       connected: false,
@@ -26,7 +26,7 @@ export class ProjectorComponent implements OnInit, OnDestroy {
    * Will ask for his pi status observable.
    */
   ngOnInit() {
-    this.subscription = this.socketService
+    this.subscription = this.socket
     .getPiStatue(this.name)
     .subscribe((status: PiStatusInterface) => { this.status = status; });
   }
@@ -36,5 +36,15 @@ export class ProjectorComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  /**
+   * Function send to the player.
+   * @param input It's a string with value "play", "pause" or "stop"
+   */
+  playerCommand(input) {
+    if (input == "play") this.socket.play(this.name.toLowerCase());
+    if (input == "pause") this.socket.pause(this.name.toLowerCase());
+    if (input == "stop") this.socket.stop(this.name.toLowerCase());
   }
 }

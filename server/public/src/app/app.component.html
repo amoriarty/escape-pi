@@ -4,7 +4,7 @@
   <span class="fill-space"></span>
   <span>
     <md-select placeholder="Playlist"></md-select>
-    <app-player></app-player>
+    <app-player (onCommand)="playerCommand($event)"></app-player>
   </span>
 </md-toolbar>
 

@@ -16,5 +16,5 @@
 <!-- Player contents. Select video and control it. -->
 <div>
   <md-select placeholder="Video"></md-select>
-  <app-player></app-player>
+  <app-player (onCommand)="playerCommand($event)"></app-player>
 </div>

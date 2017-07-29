@@ -46,4 +46,12 @@ export class SocketService {
 
     return observable;
   }
+
+  /**
+   * Player command emmiters.
+   * @param name Name of pi or "all"
+   */
+  play(name: String) { this.socket.emit('play', name); }
+  pause(name: String) { this.socket.emit('pause', name); }
+  stop(name: String) { this.socket.emit('stop', name); }
 }
