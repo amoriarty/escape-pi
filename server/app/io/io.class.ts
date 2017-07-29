@@ -26,7 +26,10 @@ export default class IO {
 			if (data.type == "client") {
 				this.client = new Client(socket);
 				this.client.disconnect = (instance) => { this.clientDisconnect(instance as Client); };
+				this.client.playerCommand = (name, command) => { this.onPlayerCommand(name, command); };
 				this.pis.forEach((item: Pi) => { this.piStatusChange(item); });
+				if (process.env.NODE_ENV == "development")
+					console.log("cilent connected");
 			}
 			else if (data.type == "pi") {
 				let pi = new Pi(data.name, socket);
@@ -34,6 +37,8 @@ export default class IO {
 				pi.disconnect = (instance) => { this.piDisconnect(instance as Pi); };
 				pi.statusChange = (instance) => { this.piStatusChange(instance); };
 				this.pis.push(pi);
+				if (process.env.NODE_ENV == "development")
+					console.log("pi", pi.name, "connected");
 			}
 		});
 	}
@@ -70,5 +75,15 @@ export default class IO {
 			console.log(instance.name, "change his status");
 		if (this.client)
 			this.client.piStatusChange(instance);
+	}
+
+	/**
+	 * Function called when client received a command.
+	 * @param name Name of pi or "all"
+	 * @param command Command to execute on raspberry.
+	 */
+	private onPlayerCommand(name: String, command: String) {
+		if (process.env.NODE_ENV == "development")
+			console.log("client ask", name, "to", command);
 	}
 }
