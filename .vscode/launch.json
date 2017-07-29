@@ -38,7 +38,8 @@
 			"env": {
 				"NODE_ENV": "development",
 				"SOCKET_URL": "http://localhost:8080",
-				"PI_NAME": "yharnam"
+				"PI_NAME": "yharnam",
+				"VIDEOS_PATH": "/tmp/videos"
 			},
 			"outFiles": [
 				"${workspaceRoot}/client/build/app.js"

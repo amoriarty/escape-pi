@@ -1,9 +1,11 @@
+import { Socket } from 'socket.io-client';
+
 export default class Player {
 	playCallback: () => void;
 	pauseCallback: () => void;
 	stopCallback: () => void;
 
-	constructor(private name: String, private socket) {
+	constructor(private name: String, private socket: Socket) {
 		this.socket.on('play', () => { this.onPlay(); });
 		this.socket.on('pause', () => { this.onPause(); });
 		this.socket.on('stop', () => { this.onStop(); });
