@@ -4,7 +4,7 @@ import { PiStatusInterface } from './pi.interface';
 
 let socket = io(process.env.SOCKET_URL);
 let status: PiStatusInterface = {
-	name: 'yharnam',
+	name: process.env.PI_NAME,
 	connected: true,
 	playing: false
 };
@@ -27,4 +27,16 @@ socket.on('whoareyou', () => {
 
 	socket.emit('iam', me);
 	socket.emit('status', status);
+});
+
+socket.on('play', () => {
+	console.log(status.name, 'play');
+});
+
+socket.on('pause', () => {
+	console.log(status.name, 'pause');
+});
+
+socket.on('stop', () => {
+	console.log(status.name, 'stop');
 });

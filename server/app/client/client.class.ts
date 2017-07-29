@@ -21,9 +21,9 @@ export default class Client extends Socket {
 	 */
 	set playerCommand(playerCallback: (name: String, command: String) => void) {
 		this.playerCallback = playerCallback;
-		this.socket.on('play', (name: String) => { this.playerCallback(name, 'play') })
-		this.socket.on('pause', (name: String) => { this.playerCallback(name, 'pause') })
-		this.socket.on('stop', (name: String) => { this.playerCallback(name, 'stop') })
+		this.socket.on('play', (name: String) => { this.playerCallback(name, 'play') });
+		this.socket.on('pause', (name: String) => { this.playerCallback(name, 'pause') });
+		this.socket.on('stop', (name: String) => { this.playerCallback(name, 'stop') });
 	}
 
 	/**

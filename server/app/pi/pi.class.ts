@@ -57,4 +57,10 @@ export default class Pi extends Socket {
 		this.remote_status = data;
 		this.callbackChange(this);
 	}
+
+	/**
+	 * Emit command via the socket.
+	 * @param command Command to emit.
+	 */
+	send(command: String) { this.socket.emit(command); }
 }

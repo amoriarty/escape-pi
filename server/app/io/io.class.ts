@@ -85,5 +85,16 @@ export default class IO {
 	private onPlayerCommand(name: String, command: String) {
 		if (process.env.NODE_ENV == "development")
 			console.log("client ask", name, "to", command);
+		if (name == "all")
+			this.io.emit(command);
+		else {
+			for (let pi of this.pis) {
+				if (pi == undefined) continue ;
+				if (pi.name == name) {
+					pi.send(command);
+					break ;
+				}
+			}
+		}
 	}
 }
