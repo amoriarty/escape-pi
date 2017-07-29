@@ -1,8 +1,10 @@
 import * as io from 'socket.io-client';
 import { SockTypeInterface } from './socket.interface';
 import { PiStatusInterface } from './pi.interface';
+import Player from "./player.class";
 
 let socket = io(process.env.SOCKET_URL);
+let player = new Player(process.env.PI_NAME, socket);
 let status: PiStatusInterface = {
 	name: process.env.PI_NAME,
 	connected: true,
@@ -29,14 +31,17 @@ socket.on('whoareyou', () => {
 	socket.emit('status', status);
 });
 
-socket.on('play', () => {
-	console.log(status.name, 'play');
-});
+/**
+ * Player callback to change status.
+ */
+let stopPlayingStatus = () => {
+	status.playing = false;
+	socket.emit('status', status);
+}
 
-socket.on('pause', () => {
-	console.log(status.name, 'pause');
-});
-
-socket.on('stop', () => {
-	console.log(status.name, 'stop');
-});
+player.pause = stopPlayingStatus;
+player.stop = stopPlayingStatus;
+player.play = () => {
+	status.playing = true;
+	socket.emit('status', status);
+}
