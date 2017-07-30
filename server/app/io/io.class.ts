@@ -27,7 +27,10 @@ export default class IO {
 				this.client = new Client(socket);
 				this.client.disconnect = (instance) => { this.clientDisconnect(instance as Client); };
 				this.client.playerCommand = (name, command) => { this.onPlayerCommand(name, command); };
-				this.pis.forEach((item: Pi) => { this.piStatusChange(item); });
+				this.pis.forEach((item: Pi) => {
+					this.piStatusChange(item);
+					this.onVideosChange(item);
+				});
 				if (process.env.NODE_ENV == "development")
 					console.log("cilent connected");
 			}
@@ -37,7 +40,6 @@ export default class IO {
 				pi.disconnect = (instance) => { this.piDisconnect(instance as Pi); };
 				pi.statusChange = (instance) => { this.piStatusChange(instance); };
 				pi.videosCallback = (instance) => { this.onVideosChange(instance); };
-				// pi.askVideos();
 				this.pis.push(pi);
 				if (process.env.NODE_ENV == "development")
 					console.log("pi", pi.name, "connected");

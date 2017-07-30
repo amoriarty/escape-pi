@@ -11,8 +11,10 @@ import { PiStatusInterface } from './projector.interface';
 })
 export class ProjectorComponent implements OnInit, OnDestroy {
   @Input() name: String;
-  subscription: Subscription;
+  statusSub: Subscription;
+  videosSub: Subscription;
   status: PiStatusInterface = null;
+  videos: String[] = [];
 
   constructor(private socket: SocketService) {
     this.status = {
@@ -26,16 +28,21 @@ export class ProjectorComponent implements OnInit, OnDestroy {
    * Will ask for his pi status observable.
    */
   ngOnInit() {
-    this.subscription = this.socket
+    this.statusSub = this.socket
     .getPiStatue(this.name)
     .subscribe((status: PiStatusInterface) => { this.status = status; });
+
+    this.videosSub = this.socket
+    .getVideos(this.name)
+    .subscribe((videos: String[]) => { this.videos = videos; });
   }
 
   /**
    * Unsuscibre from SocketService
    */
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.statusSub.unsubscribe();
+    this.videosSub.unsubscribe();
   }
 
   /**

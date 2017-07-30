@@ -4,7 +4,7 @@ import { Observer } from 'rxjs/Observer';
 import * as io from 'socket.io-client';
 
 import { SockTypeInterface } from './socket.interface';
-import { PiStatusInterface } from '../projector/projector.interface';
+import { PiStatusInterface, VideosListInterface } from '../projector/projector.interface';
 
 @Injectable()
 export class SocketService {
@@ -41,6 +41,17 @@ export class SocketService {
       this.socket.on('status', (data: PiStatusInterface) => {
         if (data.name == name.toLowerCase())
           observer.next(data);
+      });
+    });
+
+    return observable;
+  }
+
+  getVideos(name: String): Observable<String[]> {
+    let observable = new Observable((observer: Observer<String[]>) => {
+      this.socket.on('videos', (data: VideosListInterface) => {
+        if (data.name == name.toLowerCase())
+          observer.next(data.videos);
       });
     });
 

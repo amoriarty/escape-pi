@@ -14,7 +14,9 @@
 </div>
 
 <!-- Player contents. Select video and control it. -->
-<div>
-  <md-select placeholder="Video"></md-select>
+<div class="player">
+  <md-select placeholder="Video">
+    <md-option *ngFor="let video of videos" [value]="videos">{{ video }}</md-option>
+  </md-select>
   <app-player (onCommand)="playerCommand($event)"></app-player>
 </div>
