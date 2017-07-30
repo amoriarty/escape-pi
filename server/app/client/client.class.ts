@@ -1,12 +1,13 @@
 import Socket from '../socket/socket.class';
 import Pi from '../pi/pi.class';
-import { VideosListInterface } from '../pi/pi.interface';
+import { VideosListInterface, SelectedInterface } from '../pi/pi.interface';
 
 /**
  * Client class handle every action concerning interaction with angular application.
  */
 export default class Client extends Socket {
 	playerCallback: (name: String, command: String) => void;
+	selectCallback: (selected: SelectedInterface) => void;
 
 	/**
 	 * @param socket Instance of socket.io socket of the angular client.
@@ -27,6 +28,22 @@ export default class Client extends Socket {
 		this.socket.on('stop', (name: String) => { this.playerCallback(name, 'stop') });
 	}
 
+	/**
+	 * Setter for selected callback.
+	 * Call when app select a file for raspberry pi.
+	 * @param selectCallback function to call when event is received.
+	 */
+	set select(selectCallback: (selected: SelectedInterface) => void) {
+		this.selectCallback = selectCallback;
+		this.socket.on('selected', (selected: SelectedInterface) => {
+			this.selectCallback(selected);
+		});
+	}
+
+	/**
+	 * Send list of videos for a pi to app.
+	 * @param instance Instance of pi which send his list of videos.
+	 */
 	sendVideos(instance: Pi) {
 		let res: VideosListInterface = {
 			name: instance.name,

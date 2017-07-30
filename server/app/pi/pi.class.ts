@@ -20,6 +20,10 @@ export default class Pi extends Socket {
 		this.socket.on('status', (data: PiStatusInterface) => { this.onStatus(data); });
 	}
 
+	/**
+	 * Disconnection callback setter
+	 * @param callback Function to call at disconnection.
+	 */
 	set disconnect(callback: (instance: Socket) => void) {
 		this.callbackDisconnect = callback;
 		this.socket.on('disconnect', (reason) => {

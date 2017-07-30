@@ -1,4 +1,5 @@
 import { SockTypeInterface } from '../socket/socket.interface';
+import { SelectedInterface } from '../pi/pi.interface';
 import Client from '../client/client.class';
 import Pi from '../pi/pi.class';
 
@@ -13,7 +14,9 @@ export default class IO {
 	 * @param io An socket.io instance.
 	 */
 	constructor(private io) {
-		io.on('connection', (socket) => { this.connection(socket); })
+		io.on('connection', (socket) => {
+			this.connection(socket);
+		});
 	}
 
 	/**
@@ -25,8 +28,15 @@ export default class IO {
 		socket.on('iam', (data: SockTypeInterface) => {
 			if (data.type == "client") {
 				this.client = new Client(socket);
-				this.client.disconnect = (instance) => { this.clientDisconnect(instance as Client); };
-				this.client.playerCommand = (name, command) => { this.onPlayerCommand(name, command); };
+				this.client.disconnect = (instance) => {
+					this.clientDisconnect(instance as Client);
+				};
+				this.client.playerCommand = (name, command) => {
+					this.onPlayerCommand(name, command);
+				};
+				this.client.select = (selected) => {
+					this.onSelection(selected);
+				};
 				this.pis.forEach((item: Pi) => {
 					this.piStatusChange(item);
 					this.onVideosChange(item);
@@ -37,9 +47,15 @@ export default class IO {
 			else if (data.type == "pi") {
 				let pi = new Pi(data.name, socket);
 				
-				pi.disconnect = (instance) => { this.piDisconnect(instance as Pi); };
-				pi.statusChange = (instance) => { this.piStatusChange(instance); };
-				pi.videosCallback = (instance) => { this.onVideosChange(instance); };
+				pi.disconnect = (instance) => {
+					this.piDisconnect(instance as Pi);
+				};
+				pi.statusChange = (instance) => {
+					this.piStatusChange(instance);
+				};
+				pi.videosCallback = (instance) => {
+					this.onVideosChange(instance);
+				};
 				this.pis.push(pi);
 				if (process.env.NODE_ENV == "development")
 					console.log("pi", pi.name, "connected");
@@ -102,7 +118,20 @@ export default class IO {
 		}
 	}
 
+	/**
+	 * Function called when a pi send his list of videos.
+	 * @param instance Pi instance.
+	 */
 	private onVideosChange(instance: Pi) {
-		if (this.client) this.client.sendVideos(instance);
+		if (this.client)
+			this.client.sendVideos(instance);
+	}
+
+	/**
+	 * Function call when app select a video for a pi.
+	 * @param selected Selected pi and videos.
+	 */
+	private onSelection(selected: SelectedInterface) {
+		console.log(selected);
 	}
 }

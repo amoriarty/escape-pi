@@ -47,6 +47,11 @@ export class SocketService {
     return observable;
   }
 
+  /**
+   * This function make from websocket data an observable concerning
+   * pi videos list.
+   * @param name Name of pi projector.
+   */
   getVideos(name: String): Observable<String[]> {
     let observable = new Observable((observer: Observer<String[]>) => {
       this.socket.on('videos', (data: VideosListInterface) => {
@@ -58,6 +63,11 @@ export class SocketService {
     return observable;
   }
 
+  /**
+   * Function will emit 'selected' events to server.
+   * @param name Name of pi.
+   * @param video Selected videos.
+   */
   sendSelected(name: String, video: String) {
     let selected: SelectedInterface = {
       name: name,
