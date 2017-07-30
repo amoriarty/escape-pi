@@ -1,4 +1,9 @@
+/// <reference path="node-omxplayer.d.ts" />
+import * as Omx from 'node-omxplayer'
+
 export default class Player {
+	omx = Omx();
+	path: String;
 	playCallback: () => void;
 	pauseCallback: () => void;
 	stopCallback: () => void;
@@ -16,27 +21,47 @@ export default class Player {
 	set pause(pauseCallback: () => void) { this.pauseCallback = pauseCallback; }
 	set stop(stopCallback: () => void) { this.stopCallback = stopCallback; }
 
+	set source(source: String) {
+		this.path = source;
+		this.omx.newSource(source, "hdmi", false, 100);
+		this.omx.pause();
+	}
+
+	get quit() {
+		return this.omx.quit;
+	}
+
 	/**
 	 * Function call on play event.
 	 */
 	onPlay() {
-		console.log(this.name, 'play');
-		if (this.playCallback) this.playCallback();
+		if (process.env.NODE_ENV == "development")
+			console.log(this.name, 'play');
+		this.omx.play();
+		if (this.playCallback)
+			this.playCallback();
 	}
 
 	/**
 	 * Function call on pause event.
 	 */
 	onPause() {
-		console.log(this.name, 'pause');
-		if (this.pauseCallback) this.pauseCallback();
+		if (process.env.NODE_ENV == "development")
+			console.log(this.name, 'pause');
+		this.omx.pause();
+		if (this.pauseCallback)
+			this.pauseCallback();
 	}
 
 	/**
 	 * Function call on stop event.
 	 */
 	onStop() {
-		console.log(this.name, 'stop');
-		if (this.stopCallback) this.stopCallback();
+		if (process.env.NODE_ENV == "development")
+			console.log(this.name, 'stop');
+		this.omx.quit();
+		this.omx = Omx();
+		if (this.stopCallback)
+			this.stopCallback();
 	}
 }
