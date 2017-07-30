@@ -15,6 +15,7 @@ export class ProjectorComponent implements OnInit, OnDestroy {
   videosSub: Subscription;
   status: PiStatusInterface = null;
   videos: String[] = [];
+  selected: String;
 
   constructor(private socket: SocketService) {
     this.status = {
@@ -53,5 +54,9 @@ export class ProjectorComponent implements OnInit, OnDestroy {
     if (input == "play") this.socket.play(this.name.toLowerCase());
     if (input == "pause") this.socket.pause(this.name.toLowerCase());
     if (input == "stop") this.socket.stop(this.name.toLowerCase());
+  }
+
+  selection() {
+    this.socket.sendSelected(this.name, this.selected);
   }
 }

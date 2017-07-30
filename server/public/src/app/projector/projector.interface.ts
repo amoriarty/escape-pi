@@ -11,3 +11,8 @@ export interface VideosListInterface {
   name: String,
   videos: String[]
 }
+
+export interface SelectedInterface {
+  name: String,
+  video: String
+}

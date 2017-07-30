@@ -4,7 +4,7 @@ import { Observer } from 'rxjs/Observer';
 import * as io from 'socket.io-client';
 
 import { SockTypeInterface } from './socket.interface';
-import { PiStatusInterface, VideosListInterface } from '../projector/projector.interface';
+import { PiStatusInterface, VideosListInterface, SelectedInterface } from '../projector/projector.interface';
 
 @Injectable()
 export class SocketService {
@@ -56,6 +56,15 @@ export class SocketService {
     });
 
     return observable;
+  }
+
+  sendSelected(name: String, video: String) {
+    let selected: SelectedInterface = {
+      name: name,
+      video: video
+    }
+
+    this.socket.emit('selected', selected);
   }
 
   /**
