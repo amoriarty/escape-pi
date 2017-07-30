@@ -7,3 +7,8 @@ export interface PiStatusInterface {
 	connected: Boolean,
 	playing: Boolean
 }
+
+export interface VideosListInterface {
+	name: String,
+	videos: String[]
+}

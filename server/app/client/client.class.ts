@@ -1,5 +1,6 @@
 import Socket from '../socket/socket.class';
 import Pi from '../pi/pi.class';
+import { VideosListInterface } from '../pi/pi.interface';
 
 /**
  * Client class handle every action concerning interaction with angular application.
@@ -24,6 +25,15 @@ export default class Client extends Socket {
 		this.socket.on('play', (name: String) => { this.playerCallback(name, 'play') });
 		this.socket.on('pause', (name: String) => { this.playerCallback(name, 'pause') });
 		this.socket.on('stop', (name: String) => { this.playerCallback(name, 'stop') });
+	}
+
+	sendVideos(instance: Pi) {
+		let res: VideosListInterface = {
+			name: instance.name,
+			videos: instance.videos
+		};
+
+		this.socket.emit('videos', res);
 	}
 
 	/**

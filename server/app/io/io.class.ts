@@ -36,6 +36,8 @@ export default class IO {
 				
 				pi.disconnect = (instance) => { this.piDisconnect(instance as Pi); };
 				pi.statusChange = (instance) => { this.piStatusChange(instance); };
+				pi.videosCallback = (instance) => { this.onVideosChange(instance); };
+				// pi.askVideos();
 				this.pis.push(pi);
 				if (process.env.NODE_ENV == "development")
 					console.log("pi", pi.name, "connected");
@@ -96,5 +98,9 @@ export default class IO {
 				}
 			}
 		}
+	}
+
+	private onVideosChange(instance: Pi) {
+		if (this.client) this.client.sendVideos(instance);
 	}
 }

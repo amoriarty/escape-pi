@@ -7,6 +7,8 @@ import { PiStatusInterface } from './pi.interface';
 export default class Pi extends Socket {
 	private remote_status: PiStatusInterface = null;
 	private callbackChange: (instance: Pi) => void;
+	private callbackVideos: (instance: Pi) => void;
+	private videosList: String[] = [];
 
 	/**
 	 * @param pi_name Name of the raspberry, used as unique identifier.
@@ -30,23 +32,26 @@ export default class Pi extends Socket {
 	/**
 	 * Getter for pi name.
 	 */
-	get name() {
-		return this.pi_name;
-	}
+	get name() { return this.pi_name; }
 
 	/**
 	 * Getting status message from raspberry pi.
 	 */
-	get status(): PiStatusInterface {
-		return this.remote_status;
-	}
+	get status(): PiStatusInterface { return this.remote_status; }
+
+	/**
+	 * Getter for pi videos list.
+	 */
+	get videos(): String[] { return this.videosList; }
 
 	/**
 	 * Setter for status change callback.
 	 * @param callback Callback to use when status change.
 	 */
-	set statusChange(callback: (instance: Pi) => void) {
-		this.callbackChange = callback;
+	set statusChange(callback: (instance: Pi) => void) { this.callbackChange = callback; }
+	set videosCallback(callback: (instance: Pi) => void) { 
+		this.callbackVideos = callback;
+		this.socket.on('videos', (data) => { this.onVideos(data); });
 	}
 
 	/**
@@ -59,8 +64,18 @@ export default class Pi extends Socket {
 	}
 
 	/**
+	 * Call when pi send his videos list.
+	 * @param data Videos list send by pi.
+	 */
+	private onVideos(data: String[]) {
+		this.videosList = data;
+		this.callbackVideos(this);
+	}
+
+	/**
 	 * Emit command via the socket.
 	 * @param command Command to emit.
 	 */
 	send(command: String) { this.socket.emit(command); }
+	askVideos() { this.socket.emit('videos'); }
 }
