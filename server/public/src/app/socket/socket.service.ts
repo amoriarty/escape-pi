@@ -4,7 +4,11 @@ import { Observer } from 'rxjs/Observer';
 import * as io from 'socket.io-client';
 
 import { SockTypeInterface } from './socket.interface';
-import { PiStatusInterface, VideosListInterface, SelectedInterface } from '../projector/projector.interface';
+import {
+  PiStatusInterface,
+  VideosListInterface,
+  SelectedInterface
+} from '../projector/projector.interface';
 
 @Injectable()
 export class SocketService {
@@ -70,7 +74,7 @@ export class SocketService {
    */
   sendSelected(name: String, video: String) {
     let selected: SelectedInterface = {
-      name: name,
+      name: name.toLowerCase(),
       video: video
     }
 

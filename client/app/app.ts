@@ -39,6 +39,11 @@ socket.on('whoareyou', () => {
  */
 socket.on('videos', () => { socket.emit('videos', fs.videos); });
 
+socket.on('selected', (video: String) => {
+	if (process.env.NODE_ENV == "development")
+		console.log(process.env.PI_NAME, "load", video);
+});
+
 /**
  * Player callback to change status.
  */

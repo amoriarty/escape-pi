@@ -132,6 +132,12 @@ export default class IO {
 	 * @param selected Selected pi and videos.
 	 */
 	private onSelection(selected: SelectedInterface) {
-		console.log(selected);
+		for (let pi of this.pis) {
+			if (pi == undefined) continue;
+			if (pi.name == selected.name) {
+				pi.sendSelected(selected.video);
+				break;
+			}
+		}
 	}
 }

@@ -80,6 +80,15 @@ export default class Pi extends Socket {
 	 * Emit command via the socket.
 	 * @param command Command to emit.
 	 */
-	send(command: String) { this.socket.emit(command); }
-	askVideos() { this.socket.emit('videos'); }
+	send(command: String) {
+		this.socket.emit(command);
+	}
+
+	sendSelected(video: String) {
+		this.socket.emit('selected', video);
+	}
+
+	askVideos() {
+		this.socket.emit('videos');
+	}
 }
