@@ -83,6 +83,7 @@ export default class Socket {
 	 */
 	private onSelected(selected: String) {
 		this.player.source = process.env.VIDEOS_PATH + '/' + selected;
+		this.sendStatus();
 	}
 
 	private onPlay() {
