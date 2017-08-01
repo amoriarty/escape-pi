@@ -2,13 +2,15 @@ import { SockTypeInterface } from '../socket/socket.interface';
 import { SelectedInterface } from '../pi/pi.interface';
 import Client from '../client/client.class';
 import Pi from '../pi/pi.class';
+import Playlist from '../playlist/playlist.class';
 
 /**
  * Configure and manage socket.io transaction.
  */
 export default class IO {
-	client: Client = null;
-	pis: Pi[] = [];
+	private client: Client = null;
+	private pis: Pi[] = [];
+	private playlist: Playlist;
 
 	/**
 	 * @param io An socket.io instance.
@@ -27,6 +29,7 @@ export default class IO {
 		socket.emit('whoareyou');
 		socket.on('iam', (data: SockTypeInterface) => {
 			if (data.type == "client") {
+				this.playlist = new Playlist(socket);
 				this.client = new Client(socket);
 				this.client.disconnect = (instance) => {
 					this.clientDisconnect(instance as Client);
