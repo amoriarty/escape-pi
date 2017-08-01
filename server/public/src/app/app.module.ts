@@ -12,6 +12,7 @@ import { LedComponent } from './led/led.component';
 import { PlaylistComponent } from './playlist/playlist.component';
 
 import { SocketService } from './socket/socket.service';
+import { PlaylistService } from './playlist/playlist.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,10 @@ import { SocketService } from './socket/socket.service';
   entryComponents: [
     PlaylistComponent
   ],
-  providers: [ SocketService ],
+  providers: [
+    SocketService,
+    PlaylistService
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { SocketService } from '../socket/socket.service';
+import { PlaylistService } from '../playlist/playlist.service';
 import { PiStatusInterface } from './projector.interface';
 
 @Component({
@@ -17,7 +18,7 @@ export class ProjectorComponent implements OnInit, OnDestroy {
   videos: String[] = [];
   selected: String;
 
-  constructor(private socket: SocketService) {
+  constructor(private socket: SocketService, private playlist: PlaylistService) {
     this.status = {
       name: this.name,
       connected: false,
@@ -57,6 +58,7 @@ export class ProjectorComponent implements OnInit, OnDestroy {
   }
 
   selection() {
+    this.playlist.setSelected(this.name.toLowerCase(), this.selected);
     this.socket.sendSelected(this.name, this.selected);
   }
 }

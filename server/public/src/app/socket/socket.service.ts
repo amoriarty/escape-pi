@@ -5,6 +5,7 @@ import * as io from 'socket.io-client';
 import { environment } from '../../environments/environment';
 
 import { SockTypeInterface } from './socket.interface';
+import { PlaylistInterface } from '../playlist/playlist.interface';
 import {
   PiStatusInterface,
   VideosListInterface,
@@ -80,6 +81,10 @@ export class SocketService {
     }
 
     this.socket.emit('selected', selected);
+  }
+
+  sendPlaylist(playlist: PlaylistInterface) {
+    this.socket.emit('playlist', playlist);
   }
 
   /**
