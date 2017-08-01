@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import * as io from 'socket.io-client';
+import { environment } from '../../environments/environment';
 
 import { SockTypeInterface } from './socket.interface';
 import {
@@ -12,7 +13,7 @@ import {
 
 @Injectable()
 export class SocketService {
-  private url = "http://localhost:8080"; // IT'S ANNOYING.
+  private url = environment.socket_url;
   private socket;
 
   /**

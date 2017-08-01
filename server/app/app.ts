@@ -13,15 +13,12 @@ let socket = new IO(io);
 /**
  * Express configuration
  */
-app.get('/', (req, res) => {
-	if (process.env.NODE_ENV == "development") console.log("GET /");
-	res.sendFile(path.resolve("public/src/index.html"));
-});
+app.use(express.static(__dirname + '/../public/dist'));
 
 /**
  * Listener
  */
-http.listen(process.env.SERVER_PORT, () => {
+http.listen(process.env.SERVER_PORT || 8080, () => {
 	if (process.env.NODE_ENV == "development")
 		console.log("server listening on port " + process.env.SERVER_PORT);
 });

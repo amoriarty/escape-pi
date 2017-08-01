@@ -1,7 +1,8 @@
 {
-  "name": "client",
+  "name": "escape-pi-client",
   "version": "1.0.0",
   "main": "app.ts",
+  "description": " Client designed for escape-pi solution. ",
   "author": "Alexandre LEGENT <alexandrelegent@gmail.com>",
   "license": "GPL-3.0",
   "dependencies": {

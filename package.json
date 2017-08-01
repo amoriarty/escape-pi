@@ -1,0 +1,13 @@
+{
+  "name": "escape-pi",
+  "version": "1.0.0",
+  "description": " Set of programs allowing video playing on different Raspberry Pi synchronously. ",
+  "main": "build/app.js",
+  "repository": "git@github.com:amoriarty/escape-pi.git",
+  "author": "Alexandre LEGENT <alexandrelegent@gmail.com>",
+  "license": "GPL-3.0",
+  "scripts": {
+    "install": "./install_dependencies.sh",
+    "postinstall": "./compile.sh"
+  }
+}
