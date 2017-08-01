@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { MdDialog } from '@angular/material';
 import { SocketService } from './socket/socket.service';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,7 @@ import { SocketService } from './socket/socket.service';
 export class AppComponent {
   title = 'Escape Pi';
 
-  constructor(private socket: SocketService) {}
+  constructor(private socket: SocketService, public dialog: MdDialog) {}
 
   /**
    * Function send to the player.
@@ -19,5 +21,9 @@ export class AppComponent {
     if (input == "play") this.socket.play("all");
     if (input == "pause") this.socket.pause("all");
     if (input == "stop") this.socket.stop("all");
+  }
+
+  savePlaylist() {
+    this.dialog.open(PlaylistComponent);
   }
 }

@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { PlayerComponent } from './player/player.component';
 import { ProjectorComponent } from './projector/projector.component';
 import { LedComponent } from './led/led.component';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 import { SocketService } from './socket/socket.service';
 
@@ -17,13 +18,17 @@ import { SocketService } from './socket/socket.service';
     AppComponent,
     PlayerComponent,
     ProjectorComponent,
-    LedComponent
+    LedComponent,
+    PlaylistComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule
+  ],
+  entryComponents: [
+    PlaylistComponent
   ],
   providers: [ SocketService ],
   bootstrap: [ AppComponent ]
