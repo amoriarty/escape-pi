@@ -13,6 +13,7 @@ import { PlaylistComponent } from './playlist/playlist.component';
 
 import { SocketService } from './socket/socket.service';
 import { PlaylistService } from './playlist/playlist.service';
+import { ProjectorService } from './projector/projector.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { PlaylistService } from './playlist/playlist.service';
   ],
   providers: [
     SocketService,
-    PlaylistService
+    PlaylistService,
+    ProjectorService
   ],
   bootstrap: [ AppComponent ]
 })

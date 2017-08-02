@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { SocketService } from '../socket/socket.service';
 import { PlaylistService } from '../playlist/playlist.service';
 import { PiStatusInterface } from './projector.interface';
+import { ProjectorService } from './projector.service';
 
 @Component({
   selector: 'app-projector',
@@ -18,7 +19,11 @@ export class ProjectorComponent implements OnInit, OnDestroy {
   videos: String[] = [];
   selected: String;
 
-  constructor(private socket: SocketService, private playlist: PlaylistService) {
+  constructor(
+    private socket: SocketService,
+    private playlist: PlaylistService,
+    private projector: ProjectorService
+  ) {
     this.status = {
       name: this.name,
       connected: false,
@@ -30,6 +35,8 @@ export class ProjectorComponent implements OnInit, OnDestroy {
    * Will ask for his pi status observable.
    */
   ngOnInit() {
+    this.projector.projector = this;
+
     this.statusSub = this.socket
     .getPiStatue(this.name)
     .subscribe((status: PiStatusInterface) => { this.status = status; });
@@ -60,5 +67,10 @@ export class ProjectorComponent implements OnInit, OnDestroy {
   selection() {
     this.playlist.setSelected(this.name.toLowerCase(), this.selected);
     this.socket.sendSelected(this.name, this.selected);
+  }
+
+  set autoSelect(selected: String) {
+    this.selected = selected;
+    this.selection();
   }
 }

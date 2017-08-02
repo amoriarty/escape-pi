@@ -4,10 +4,8 @@ import Socket from '../socket/socket.class';
 import { PlaylistInterface } from './playlist.interface';
 
 export default class Playlist extends Socket {
-	private callback: (name: String) => void;
-	private playlists: Playlist[] = [];
+	private playlists: PlaylistInterface[] = [];
 	private MongoClient = new mongodb.MongoClient();
-	private db: mongodb.Db;
 	private collection: mongodb.Collection;
 
 	constructor(socket) {
@@ -17,11 +15,12 @@ export default class Playlist extends Socket {
 				console.error(err);
 			if (process.env.NODE_ENV == "development")
 				console.log("mongodb connected");
-			this.db = db;
 			this.collection = db.collection('playlist');
+			this.getDatabasePlaylists();
 		});
-		this.socket.emit('playlist', this.playlists);
-		this.socket.on('playlist', (playlist: PlaylistInterface) => { this.savePlaylist(playlist); });
+		this.socket.on('playlist', (playlist: PlaylistInterface) => {
+			this.savePlaylist(playlist);
+		});
 	}
 
 	private savePlaylist(playlist: PlaylistInterface) {
@@ -30,10 +29,23 @@ export default class Playlist extends Socket {
 				if (err) console.error(err);
 				else console.log("playlist saved:", playlist);
 			}
+			if (!err) {
+				this.playlists.push(playlist);
+				this.emitPlaylists();
+			}
 		});
 	}
 
-	set read(callback) {
-		this.callback = callback;
+	private emitPlaylists() {
+		this.socket.emit('playlist', this.playlists);
+	}
+
+	private getDatabasePlaylists() {
+		this.collection.find({}).toArray((err, docs) => {
+			if (process.env.NODE_ENV == "development" && err)
+				console.log(err);
+			this.playlists = docs;
+			this.emitPlaylists();
+		});
 	}
 }

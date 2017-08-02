@@ -15,8 +15,6 @@ export class PlaylistService {
     this.playlist.name = name;
   }
 
-  get debug() { return this.playlist; }
-
   setSelected(pi_name: String, selected: String) {
     for (let item of this.playlist.videos) {
       if (item.name == pi_name) {

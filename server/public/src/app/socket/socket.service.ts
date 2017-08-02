@@ -69,6 +69,16 @@ export class SocketService {
     return observable;
   }
 
+  getPlaylists(): Observable<PlaylistInterface[]> {
+    let observable = new Observable((observer: Observer<PlaylistInterface[]>) => {
+      this.socket.on('playlist', (data: PlaylistInterface[]) => {
+        observer.next(data);
+      });
+    });
+
+    return observable;
+  }
+
   /**
    * Function will emit 'selected' events to server.
    * @param name Name of pi.

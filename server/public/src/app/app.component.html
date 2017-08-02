@@ -3,7 +3,9 @@
   <span>{{ title }}</span>
   <span class="fill-space"></span>
   <span>
-    <md-select placeholder="Playlist"></md-select>
+    <md-select placeholder="Playlist" [(ngModel)]="selected">
+      <md-option *ngFor="let playlist of playlists" [value]="playlist" (click)="selection()">{{ playlist.name }}</md-option>
+    </md-select>
     <app-player (onCommand)="playerCommand($event)"></app-player>
   </span>
 </md-toolbar>
