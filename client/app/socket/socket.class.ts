@@ -98,7 +98,6 @@ export default class Socket {
 
 	private onStop() {
 		this.player.stop();
-		console.log(this.player.running);
 		this.sendStatus();
 	}
 }

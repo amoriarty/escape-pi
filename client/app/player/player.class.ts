@@ -2,7 +2,7 @@
 import * as Omx from 'node-omxplayer'
 
 export default class Player {
-	private omx = Omx();
+	private omx: NodeOmxPlayer;
 	private path: String;
 	private playing = false;
 	private loaded = false;
@@ -29,12 +29,12 @@ export default class Player {
 	 * Function call on play event.
 	 */
 	play() {
-		if (!this.loaded)
+		if (!this.loaded || this.running)
 			return ;
-		if (process.env.NODE_ENV == "development")
-			console.log(process.env.PI_NAME, 'play');
 		this.omx.play();
 		this.playing = true;
+		if (process.env.NODE_ENV == "development")
+			console.log(process.env.PI_NAME, 'play');
 	}
 
 	/**
@@ -43,10 +43,10 @@ export default class Player {
 	pause() {
 		if (!this.running)
 			return ;
-		if (process.env.NODE_ENV == "development")
-			console.log(process.env.PI_NAME, 'pause');
 		this.omx.pause();
 		this.playing = false;
+		if (process.env.NODE_ENV == "development")
+			console.log(process.env.PI_NAME, 'pause');
 	}
 
 	/**
@@ -59,12 +59,13 @@ export default class Player {
 	}
 
 	private load() {
+		if (this.omx)
+			this.omx.quit();
 		this.loaded = false;
+		this.playing = false;
 		if (!this.path)
 			return ;
-		if (this.running)
-			this.playing = false;
-		this.omx.newSource(this.path, "hdmi", false, 100);
+		this.omx = Omx(this.path, "hdmi", false, 100);
 		this.omx.pause();
 		this.loaded = true;
 		if (process.env.NODE_ENV == "development")
