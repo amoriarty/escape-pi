@@ -61,7 +61,7 @@ export default class Player {
 		if (!this.path)
 			return ;
 		if (!this.omx)
-			this.omx = Omx(this.path, "hdmi", true, 100);
+			this.omx = Omx(this.path, "hdmi", false, 100);
 		else {
 			this.reload();
 			return ;

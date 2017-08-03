@@ -70,7 +70,7 @@ PATH=$NODE_BIN_DIR:$PATH
 # variables defined in this script.
 export NODE_PATH=$NODE_PATH
 export NODE_ENV="development"
-export SOCKET_URL="http://yharnam.local"
+export SOCKET_URL="http://theroom.local"
 export PI_NAME="yharnam"
 export VIDEOS_PATH="/home/pi/Videos"
  
