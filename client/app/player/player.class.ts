@@ -2,9 +2,10 @@
 import * as Omx from 'node-omxplayer'
 
 export default class Player {
-	omx: NodeOmxPlayer;
-	path: String;
-	playing = false;
+	private omx = Omx();
+	private path: String;
+	private playing = false;
+	private loaded = false;
 
 	constructor() { }
 
@@ -28,7 +29,7 @@ export default class Player {
 	 * Function call on play event.
 	 */
 	play() {
-		if (!this.omx)
+		if (!this.loaded)
 			return ;
 		if (process.env.NODE_ENV == "development")
 			console.log(process.env.PI_NAME, 'play');
@@ -40,7 +41,7 @@ export default class Player {
 	 * Function call on pause event.
 	 */
 	pause() {
-		if (!this.omx)
+		if (!this.running)
 			return ;
 		if (process.env.NODE_ENV == "development")
 			console.log(process.env.PI_NAME, 'pause');
@@ -52,31 +53,21 @@ export default class Player {
 	 * Function call on stop event.
 	 */
 	stop() {
-		this.reload();
 		if (this.omx && process.env.NODE_ENV == "development")
 			console.log(process.env.PI_NAME, 'stop');
+		this.load();
 	}
 
 	private load() {
+		this.loaded = false;
 		if (!this.path)
 			return ;
-		if (!this.omx)
-			this.omx = Omx(this.path, "hdmi", false, 100);
-		else {
-			this.reload();
-			return ;
-		}
+		if (this.running)
+			this.playing = false;
+		this.omx.newSource(this.path, "hdmi", false, 100);
 		this.omx.pause();
+		this.loaded = true;
 		if (process.env.NODE_ENV == "development")
 			console.log(process.env.PI_NAME, "load", this.path);
-	}
-
-	private reload() {
-		if (this.omx) {
-			this.omx.quit();
-			delete this.omx;
-			this.playing = false;
-		}
-		this.load();
 	}
 }
