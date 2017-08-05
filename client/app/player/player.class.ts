@@ -81,7 +81,12 @@ export default class Player {
 			return ;
 		this.omx = Omx(this.path, "hdmi", false, 100);
 		this.omx.pause();
+		this.lock = true;
 		this.omx.on('close', () => {
+			if (this.lock) {
+				this.lock = false;
+				return ;
+			}
 			this.loaded = false;
 			this.playing = false;
 			if (this.statusChange)
