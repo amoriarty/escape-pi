@@ -40,6 +40,12 @@ export default class IO {
 				this.client.select = (selected) => {
 					this.onSelection(selected);
 				};
+				this.client.shutdown = (name) => {
+					this.onShutdown(name);
+				};
+				this.client.reboot = (name) => {
+					this.onReboot(name);
+				};
 				this.pis.forEach((item: Pi) => {
 					this.piStatusChange(item);
 					this.onVideosChange(item);
@@ -140,6 +146,38 @@ export default class IO {
 			if (pi.name == selected.name) {
 				pi.sendSelected(selected.video);
 				break;
+			}
+		}
+	}
+
+	private onShutdown(name: String) {
+		if (process.env.NODE_ENV == "development")
+			console.log("client ask", name, "to shutdown");
+		if (name == "all")
+			this.io.emit('shutdown');
+		else {
+			for (let pi of this.pis) {
+				if (pi == undefined) continue ;
+				if (pi.name == name) {
+					pi.send('shutdown');
+					break ;
+				}
+			}
+		}
+	}
+
+	private onReboot(name: String) {
+		if (process.env.NODE_ENV == "development")
+			console.log("client ask", name, "to reboot");
+		if (name == "all")
+			this.io.emit('reboot');
+		else {
+			for (let pi of this.pis) {
+				if (pi == undefined) continue ;
+				if (pi.name == name) {
+					pi.send('reboot');
+					break ;
+				}
 			}
 		}
 	}

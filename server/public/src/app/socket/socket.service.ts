@@ -45,7 +45,7 @@ export class SocketService {
   getPiStatue(name: String): Observable<PiStatusInterface> {
     let observable = new Observable((observer: Observer<PiStatusInterface>) => {
       this.socket.on('status', (data: PiStatusInterface) => {
-        if (data.name == name.toLowerCase())
+        if (data.name == name)
           observer.next(data);
       });
     });
@@ -61,7 +61,7 @@ export class SocketService {
   getVideos(name: String): Observable<String[]> {
     let observable = new Observable((observer: Observer<String[]>) => {
       this.socket.on('videos', (data: VideosListInterface) => {
-        if (data.name == name.toLowerCase())
+        if (data.name == name)
           observer.next(data.videos);
       });
     });
@@ -86,7 +86,7 @@ export class SocketService {
    */
   sendSelected(name: String, video: String) {
     let selected: SelectedInterface = {
-      name: name.toLowerCase(),
+      name: name,
       video: video
     }
 
@@ -104,4 +104,11 @@ export class SocketService {
   play(name: String) { this.socket.emit('play', name); }
   pause(name: String) { this.socket.emit('pause', name); }
   stop(name: String) { this.socket.emit('stop', name); }
+
+  /**
+   * Power command emitters.
+   * @param name Name of pi or "all"
+   */
+  shutdown(name: String) { this.socket.emit('shutdown', name); }
+  reboot(name: String) { this.socket.emit('reboot', name); }
 }

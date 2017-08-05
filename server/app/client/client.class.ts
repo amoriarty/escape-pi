@@ -6,8 +6,10 @@ import { VideosListInterface, SelectedInterface } from '../pi/pi.interface';
  * Client class handle every action concerning interaction with angular application.
  */
 export default class Client extends Socket {
-	playerCallback: (name: String, command: String) => void;
-	selectCallback: (selected: SelectedInterface) => void;
+	private playerCallback: (name: String, command: String) => void;
+	private selectCallback: (selected: SelectedInterface) => void;
+	private rebootCallback: (name: String) => void;
+	private shutdownCallback: (name: String) => void;
 
 	/**
 	 * @param socket Instance of socket.io socket of the angular client.
@@ -37,6 +39,20 @@ export default class Client extends Socket {
 		this.selectCallback = selectCallback;
 		this.socket.on('selected', (selected: SelectedInterface) => {
 			this.selectCallback(selected);
+		});
+	}
+
+	set reboot(rebootCallback: (name: String) => void) {
+		this.rebootCallback = rebootCallback;
+		this.socket.on('reboot', (name: String) => {
+			this.rebootCallback(name);
+		});
+	}
+
+	set shutdown(shutdownCallback: (name: String) => void) {
+		this.shutdownCallback = shutdownCallback;
+		this.socket.on('shutdown', (name: String) => {
+			this.shutdownCallback(name);
 		});
 	}
 

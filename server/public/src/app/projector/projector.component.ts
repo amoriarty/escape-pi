@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
+import { CapitalizePipe } from '../capitalize.pipe';
 import { SocketService } from '../socket/socket.service';
 import { PlaylistService } from '../playlist/playlist.service';
 import { PiStatusInterface } from './projector.interface';
@@ -9,7 +10,7 @@ import { ProjectorService } from './projector.service';
 @Component({
   selector: 'app-projector',
   templateUrl: './projector.component.html',
-  styleUrls: ['./projector.component.scss']
+  styleUrls: ['./projector.component.scss'],
 })
 export class ProjectorComponent implements OnInit, OnDestroy {
   @Input() name: String;
@@ -59,13 +60,13 @@ export class ProjectorComponent implements OnInit, OnDestroy {
    * @param input It's a string with value "play", "pause" or "stop"
    */
   playerCommand(input) {
-    if (input == "play") this.socket.play(this.name.toLowerCase());
-    if (input == "pause") this.socket.pause(this.name.toLowerCase());
-    if (input == "stop") this.socket.stop(this.name.toLowerCase());
+    if (input == "play") this.socket.play(this.name);
+    if (input == "pause") this.socket.pause(this.name);
+    if (input == "stop") this.socket.stop(this.name);
   }
 
   selection() {
-    this.playlist.setSelected(this.name.toLowerCase(), this.selected);
+    this.playlist.setSelected(this.name, this.selected);
     this.socket.sendSelected(this.name, this.selected);
   }
 
@@ -73,4 +74,7 @@ export class ProjectorComponent implements OnInit, OnDestroy {
     this.selected = selected;
     this.selection();
   }
+
+  shutdown() { this.socket.shutdown(this.name); }
+  reboot() { this.socket.reboot(this.name); }
 }

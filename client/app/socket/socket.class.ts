@@ -2,9 +2,11 @@ import { SockTypeInterface } from './socket.interface';
 import { PiStatusInterface } from '../pi/pi.interface';
 import FileSystem from '../fs/fs.class';
 import Player from '../player/player.class';
+import Power from '../power/power.class';
 
 export default class Socket {
 	fs = new FileSystem(process.env.VIDEOS_PATH);
+	power = new Power();
 	on = false;
 
 	/**
@@ -21,6 +23,8 @@ export default class Socket {
 		this.socket.on('play', () => { this.onPlay(); });
 		this.socket.on('pause', () => { this.onPause(); });
 		this.socket.on('stop', () => { this.onStop(); });
+		this.socket.on('shutdown', () => { this.onShutdown(); });
+		this.socket.on('reboot', () => { this.onReboot(); });
 	}
 
 	get connected(): Boolean {
@@ -99,5 +103,17 @@ export default class Socket {
 	private onStop() {
 		this.player.stop();
 		this.sendStatus();
+	}
+
+	private onShutdown() {
+		if (process.env.NODE_ENV == "development")
+			console.log("received shutdown command");
+		this.power.shutdown();
+	}
+
+	private onReboot() {
+		if (process.env.NODE_ENV == "development")
+			console.log("received reboot command");
+		this.power.reboot();
 	}
 }

@@ -14,6 +14,7 @@ import { PlaylistComponent } from './playlist/playlist.component';
 import { SocketService } from './socket/socket.service';
 import { PlaylistService } from './playlist/playlist.service';
 import { ProjectorService } from './projector/projector.service';
+import { CapitalizePipe } from './capitalize.pipe';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ProjectorService } from './projector/projector.service';
     PlayerComponent,
     ProjectorComponent,
     LedComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    CapitalizePipe
   ],
   imports: [
     BrowserModule,

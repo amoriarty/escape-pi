@@ -46,7 +46,7 @@ export class AppComponent {
       return ;
     for (let projector of this.projector.projectors) {
       for (let video of this.selected.videos) {
-        if (projector.name.toLowerCase() == video.name)
+        if (projector.name == video.name)
           projector.autoSelect = video.video;
       }
     }
