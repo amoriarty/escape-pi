@@ -15,7 +15,7 @@ interface NodeOmxPlayerStatic {
 	(source?: String, output?: String, loop?: Boolean, initialVolume?: Number, showOsd?: Boolean): NodeOmxPlayer;
 }
 
-interface NodeOmxPlayer extends Event {
+interface NodeOmxPlayer extends NodeJS.EventEmitter {
 	/**
 	 * Starts playback of a new source, the arguments are identical to those of the Omx constructor method described above. If a file is currently playing, ends this playback and begins the new source.
 	 * @param source (optional): The playback source, any audio or video file (or stream) that omxplayer is capable of playing. If left blank, the player will initialise and wait for a source to be added later with the newSource method.

@@ -10,6 +10,10 @@ export default class Power {
 	}
 
 	killomx() {
-		exec.execSync('killall omxplayer.bin');
+		try {
+			exec.execSync('killall omxplayer.bin');
+			exec.execSync('killall omxplayer');
+		}
+		catch (error) { }
 	}
 }

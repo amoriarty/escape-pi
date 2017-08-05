@@ -20,11 +20,12 @@ export default class Socket {
 		this.socket.on('whoareyou', () => { this.iAm(); });
 		this.socket.on('videos', () => { this.onVideos(); })
 		this.socket.on('selected', (selected: String) => { this.onSelected(selected); });
-		this.socket.on('play', () => { this.onPlay(); });
-		this.socket.on('pause', () => { this.onPause(); });
-		this.socket.on('stop', () => { this.onStop(); });
+		this.socket.on('play', () => { this.player.play(); });
+		this.socket.on('pause', () => { this.player.pause(); });
+		this.socket.on('stop', () => { this.player.stop(); });
 		this.socket.on('shutdown', () => { this.onShutdown(); });
 		this.socket.on('reboot', () => { this.onReboot(); });
+		this.player.onStatusChange = () => { this.sendStatus(); };
 	}
 
 	get connected(): Boolean {
@@ -87,22 +88,18 @@ export default class Socket {
 	 */
 	private onSelected(selected: String) {
 		this.player.source = process.env.VIDEOS_PATH + '/' + selected;
-		this.sendStatus();
 	}
 
 	private onPlay() {
 		this.player.play();
-		this.sendStatus();
 	}
 
 	private onPause() {
 		this.player.pause();
-		this.sendStatus();
 	}
 
 	private onStop() {
 		this.player.stop();
-		this.sendStatus();
 	}
 
 	private onShutdown() {

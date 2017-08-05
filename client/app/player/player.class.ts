@@ -6,8 +6,14 @@ export default class Player {
 	private path: String;
 	private playing = false;
 	private loaded = false;
+	private statusChange: () => void;
+	private lock = false;
 
 	constructor() { }
+
+	set onStatusChange(callback: () => void) {
+		this.statusChange = callback;
+	}
 
 	/**
 	 * Setter for source to read.
@@ -29,12 +35,16 @@ export default class Player {
 	 * Function call on play event.
 	 */
 	play() {
-		if (!this.loaded || this.running)
+		if (this.running || (!this.loaded && !this.path))
 			return ;
+		else if (!this.loaded)
+			this.load();
 		this.omx.play();
 		this.playing = true;
 		if (process.env.NODE_ENV == "development")
 			console.log(process.env.PI_NAME, 'play');
+		if (this.statusChange)
+			this.statusChange();
 	}
 
 	/**
@@ -47,6 +57,8 @@ export default class Player {
 		this.playing = false;
 		if (process.env.NODE_ENV == "development")
 			console.log(process.env.PI_NAME, 'pause');
+		if (this.statusChange)
+			this.statusChange();
 	}
 
 	/**
@@ -59,16 +71,26 @@ export default class Player {
 	}
 
 	private load() {
-		if (this.omx)
-			this.omx.quit();
+		if (this.omx) {
+			try { this.omx.quit(); }
+			catch (error) { }
+		}
 		this.loaded = false;
 		this.playing = false;
 		if (!this.path)
 			return ;
 		this.omx = Omx(this.path, "hdmi", false, 100);
 		this.omx.pause();
+		this.omx.on('close', () => {
+			this.loaded = false;
+			this.playing = false;
+			if (this.statusChange)
+				this.statusChange();
+		});
 		this.loaded = true;
 		if (process.env.NODE_ENV == "development")
 			console.log(process.env.PI_NAME, "load", this.path);
+		if (this.statusChange)
+			this.statusChange();
 	}
 }
