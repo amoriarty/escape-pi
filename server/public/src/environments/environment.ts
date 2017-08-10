@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  socket_url: "http://theroom.local"
+  socket_url: "http://localhost:8080"
 };
