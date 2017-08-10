@@ -1,11 +1,9 @@
-import * as ioPkg from 'socket.io-client';
 import Environment from './tools/environment.class';
 import Debug from './tools/debug.class';
 import Socket from './socket/socket.class';
 import Player from "./player/player.class";
 import Power from "./power/power.class";
 
-let io: SocketIOClient.Socket;
 let player: Player;
 let socket: Socket;
 let power: Power;
@@ -19,7 +17,17 @@ if (!Environment.check()) {
 }
 Debug.log("All environment variables are set.");
 
-io = ioPkg(Environment.socket_url as any);
+/**
+ * Socket connection.
+ */
+socket = new Socket();
 player = new Player();
-socket = new Socket(io, player);
-power = new Power();
+
+/**
+ * Example for socket use.
+ * Need to update server before.
+ */
+socket.on('play', () => {
+	Debug.log('socket play');
+	player.play();
+});
