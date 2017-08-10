@@ -14,27 +14,15 @@ import {
 
 @Injectable()
 export class SocketService {
-  private url = environment.socket_url;
-  private socket;
+  private _socket;
 
   /**
    * Make websocket connection.
    * It also configure event handling.
    */
   constructor() {
-    this.socket = io(this.url);
-    this.socket.on('whoareyou', () => { this.whoAreYou(); });
-  }
-
-  /**
-   * Respond server who are you asking.
-   */
-  private whoAreYou() {
-    let me: SockTypeInterface = {
-      type: "client"
-    };
-
-    this.socket.emit('iam', me);
+    this._socket = io(environment.socket_url);
+    this._socket.emit('whatareyou', 'angular');
   }
 
   /**
@@ -44,7 +32,7 @@ export class SocketService {
    */
   getPiStatue(name: String): Observable<PiStatusInterface> {
     let observable = new Observable((observer: Observer<PiStatusInterface>) => {
-      this.socket.on('status', (data: PiStatusInterface) => {
+      this._socket.on('status', (data: PiStatusInterface) => {
         if (data.name == name)
           observer.next(data);
       });
@@ -60,7 +48,7 @@ export class SocketService {
    */
   getVideos(name: String): Observable<String[]> {
     let observable = new Observable((observer: Observer<String[]>) => {
-      this.socket.on('videos', (data: VideosListInterface) => {
+      this._socket.on('videos', (data: VideosListInterface) => {
         if (data.name == name)
           observer.next(data.videos);
       });
@@ -71,7 +59,7 @@ export class SocketService {
 
   getPlaylists(): Observable<PlaylistInterface[]> {
     let observable = new Observable((observer: Observer<PlaylistInterface[]>) => {
-      this.socket.on('playlist', (data: PlaylistInterface[]) => {
+      this._socket.on('playlist', (data: PlaylistInterface[]) => {
         observer.next(data);
       });
     });
@@ -90,25 +78,25 @@ export class SocketService {
       video: video
     }
 
-    this.socket.emit('selected', selected);
+    this._socket.emit('selected', selected);
   }
 
   sendPlaylist(playlist: PlaylistInterface) {
-    this.socket.emit('playlist', playlist);
+    this._socket.emit('playlist', playlist);
   }
 
   /**
    * Player command emmiters.
    * @param name Name of pi or "all"
    */
-  play(name: String) { this.socket.emit('play', name); }
-  pause(name: String) { this.socket.emit('pause', name); }
-  stop(name: String) { this.socket.emit('stop', name); }
+  play(name: String) { this._socket.emit('play', name); }
+  pause(name: String) { this._socket.emit('pause', name); }
+  stop(name: String) { this._socket.emit('stop', name); }
 
   /**
    * Power command emitters.
    * @param name Name of pi or "all"
    */
-  shutdown(name: String) { this.socket.emit('shutdown', name); }
-  reboot(name: String) { this.socket.emit('reboot', name); }
+  shutdown(name: String) { this._socket.emit('shutdown', name); }
+  reboot(name: String) { this._socket.emit('reboot', name); }
 }

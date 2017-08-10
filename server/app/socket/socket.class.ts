@@ -1,19 +1,69 @@
+import 'socket.io';
+import { EventEmitter } from "events";
+import Debug from '../tools/debug.class';
+import { SocketType } from './socket.interface';
+
 /**
- * Socket class handle every transaction that as to be done via socket.
+ * This class manage a unique socket connection.
  */
-export default class Socket {
-	protected callbackDisconnect: (instance: Socket) => void;
+export default class Socket extends EventEmitter {
+	private _type: SocketType;
+
+	constructor(private _socket: SocketIO.Socket) {
+		super();
+		this._socket.on('whatareyou', (type) => this._whatareyou(type));
+		Debug.log('socket now waiting for type authentification');
+	}
 
 	/**
-	 * @param socket An instance of io from socket.io
+	 * Accessor for adding events listener.
 	 */
-	constructor(protected socket) { }
+	public get listen() {
+		return this._socket.on;
+	}
 
 	/**
-	 * Setter for disconnect callback.
+	 * Accessor for the socket type
+	 * @return A value of SocketType or null.
 	 */
-	set disconnect(callback: (instance: Socket) => void) {
-		this.callbackDisconnect = callback;
-		this.socket.on('disconnect', (reason) => { this.callbackDisconnect(this); });
+	public get type() {
+		return this._type || null;
+	}
+
+	/**
+	 * Function called for type authentification.
+	 * @param type Given by client socket.
+	 */
+	private _whatareyou(type: String) {
+		switch (type) {
+			case "angular":
+				this._type = SocketType.ANGULAR;
+				this.emit('new_angular');
+				break ;
+			case "raspberry":
+				this._type = SocketType.RASPBERRY;
+				this.emit('new_raspberry');
+				break ;
+		}
 	}
 }
+
+// /**
+//  * Socket class handle every transaction that as to be done via socket.
+//  */
+// export default class Socket {
+// 	protected callbackDisconnect: (instance: Socket) => void;
+
+// 	/**
+// 	 * @param socket An instance of io from socket.io
+// 	 */
+// 	constructor(protected socket) { }
+
+// 	/**
+// 	 * Setter for disconnect callback.
+// 	 */
+// 	set disconnect(callback: (instance: Socket) => void) {
+// 		this.callbackDisconnect = callback;
+// 		this.socket.on('disconnect', (reason) => { this.callbackDisconnect(this); });
+// 	}
+// }

@@ -18,7 +18,8 @@ if (!Environment.check()) {
 Debug.log("All environment variables are set.");
 
 /**
- * Socket connection.
+ * Socket initialization.
+ * Player initialization.
  */
 socket = new Socket();
 player = new Player();
@@ -27,7 +28,7 @@ player = new Player();
  * Example for socket use.
  * Need to update server before.
  */
-socket.on('play', () => {
+socket.listen('play', () => {
 	Debug.log('socket play');
 	player.play();
 });

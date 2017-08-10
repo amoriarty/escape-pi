@@ -1,7 +1,7 @@
 /**
- * Interface for response by client websocket.
+ * Type of the socket.
  */
-export interface SockTypeInterface {
-	type: String,
-	name?: String
-};
+export enum SocketType {
+	RASPBERRY,
+	ANGULAR
+}

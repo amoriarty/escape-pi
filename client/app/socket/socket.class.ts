@@ -25,6 +25,7 @@ export default class Socket {
 	 */
 	private _connect() {
 		this._connected = true;
+		this._socket.emit('whatareyou', 'raspberry')
 		Debug.log('socket connected');
 	}
 
@@ -39,7 +40,7 @@ export default class Socket {
 	/**
 	 * This getter allow class user to add a socket listener.
 	 */
-	public get on() {
+	public get listen() {
 		return this._socket.on;
 	}
 }
