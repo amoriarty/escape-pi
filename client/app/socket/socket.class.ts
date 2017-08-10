@@ -3,9 +3,11 @@ import { PiStatusInterface } from '../pi/pi.interface';
 import FileSystem from '../fs/fs.class';
 import Player from '../player/player.class';
 import Power from '../power/power.class';
+import Debug from '../tools/debug.class';
+import Environment from '../tools/environment.class';
 
 export default class Socket {
-	fs = new FileSystem(process.env.VIDEOS_PATH);
+	fs = new FileSystem(Environment.videos_path);
 	power = new Power();
 	on = false;
 
@@ -37,7 +39,7 @@ export default class Socket {
 	 */
 	sendStatus() {
 		this.socket.emit('status', {
-			name: process.env.PI_NAME,
+			name: Environment.pi_name,
 			connected: this.connected,
 			playing: this.player.running
 		});
@@ -47,8 +49,7 @@ export default class Socket {
 	 * On socket connection.
 	 */
 	private connect() {
-		if (process.env.NODE_ENV == "development")
-			console.log("socket", process.env.PI_NAME, "connected");
+		Debug.log("socket connected");
 		this.on = true;
 	}
 
@@ -56,8 +57,7 @@ export default class Socket {
 	 * Function called at disconnection.
 	 */
 	private disconnect() {
-		if (process.env.NODE_ENV == "development")
-			console.log("socket", process.env.PI_NAME, "connected");
+		Debug.log("socket disconnected");
 		this.on = false;
 	}
 
@@ -67,7 +67,7 @@ export default class Socket {
 	private iAm() {
 		let me: SockTypeInterface = {
 			type: "pi",
-			name: process.env.PI_NAME
+			name: Environment.pi_name
 		};
 
 		this.socket.emit('iam', me);
@@ -87,7 +87,7 @@ export default class Socket {
 	 * @param selected Selected videos to load.
 	 */
 	private onSelected(selected: String) {
-		this.player.source = process.env.VIDEOS_PATH + '/' + selected;
+		this.player.source = Environment.videos_path + '/' + selected;
 	}
 
 	private onPlay() {
@@ -103,14 +103,12 @@ export default class Socket {
 	}
 
 	private onShutdown() {
-		if (process.env.NODE_ENV == "development")
-			console.log("received shutdown command");
+		Debug.log("received shutdown command");
 		this.power.shutdown();
 	}
 
 	private onReboot() {
-		if (process.env.NODE_ENV == "development")
-			console.log("received reboot command");
+		Debug.log("received reboot command");
 		this.power.reboot();
 	}
 }

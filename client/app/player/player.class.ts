@@ -1,5 +1,6 @@
-/// <reference path="../node-omxplayer.d.ts" />
+/// <reference path='../node-omxplayer.d.ts' />
 import * as Omx from 'node-omxplayer'
+import Debug from '../tools/debug.class';
 
 export default class Player {
 	private omx: NodeOmxPlayer;
@@ -41,8 +42,7 @@ export default class Player {
 			this.load();
 		this.omx.play();
 		this.playing = true;
-		if (process.env.NODE_ENV == "development")
-			console.log(process.env.PI_NAME, 'play');
+		Debug.log('play');
 		if (this.statusChange)
 			this.statusChange();
 	}
@@ -55,8 +55,7 @@ export default class Player {
 			return ;
 		this.omx.pause();
 		this.playing = false;
-		if (process.env.NODE_ENV == "development")
-			console.log(process.env.PI_NAME, 'pause');
+		Debug.log('pause');
 		if (this.statusChange)
 			this.statusChange();
 	}
@@ -65,8 +64,8 @@ export default class Player {
 	 * Function call on stop event.
 	 */
 	stop() {
-		if (this.omx && process.env.NODE_ENV == "development")
-			console.log(process.env.PI_NAME, 'stop');
+		if (this.omx)
+			Debug.log('stop');
 		this.load();
 	}
 
@@ -79,7 +78,7 @@ export default class Player {
 		this.playing = false;
 		if (!this.path)
 			return ;
-		this.omx = Omx(this.path, "hdmi", false, 100);
+		this.omx = Omx(this.path, 'hdmi', false, 100);
 		this.omx.pause();
 		this.lock = true;
 		this.omx.on('close', () => {
@@ -93,8 +92,7 @@ export default class Player {
 				this.statusChange();
 		});
 		this.loaded = true;
-		if (process.env.NODE_ENV == "development")
-			console.log(process.env.PI_NAME, "load", this.path);
+		Debug.log('load ' + this.path);
 		if (this.statusChange)
 			this.statusChange();
 	}
