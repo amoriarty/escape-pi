@@ -3,6 +3,7 @@ import Debug from './tools/debug.class';
 import Socket from './socket/socket.class';
 import Player from "./player/player.class";
 import Power from "./power/power.class";
+import FileSystem from './fs/fs.class';
 import { ProjectorStatusInterface } from './projector.interface';
 
 let player: Player;
@@ -38,6 +39,10 @@ status = {
 socket.on('connect', () => {
 	status.connected = true;
 	socket.status = status;
+	socket.videos = {
+		name: Environment.pi_name,
+		videos: FileSystem.videos(Environment.videos_path)
+	};
 });
 
 /**

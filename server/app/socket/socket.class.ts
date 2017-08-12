@@ -59,6 +59,7 @@ export default class Socket extends EventEmitter {
 				this._type = SocketType.RASPBERRY;
 				this._socket.on('whoareyou', (name) => this.emit('whoareyou', name));
 				this._socket.on('status', (status) => this.emit('status', status));
+				this._socket.on('videos', (videos) => this.emit('videos', videos));
 				this.emit('new_raspberry');
 				break ;
 		}

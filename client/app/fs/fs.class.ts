@@ -1,12 +1,20 @@
 import * as fs from 'fs';
+import Debug from '../tools/debug.class';
 
 export default class FileSystem {
-	constructor(private path: String) { }
-
-	get videos(): String[] {
+	/**
+	 * Will get you list of all mkv/mp4 on given path.
+	 * @param path Paht where are located videos
+	 */
+	public static videos(path: String): String[] {
 		let videos: String[] = [];
-		let fsout = fs.readdirSync(this.path as string);
+		let fsout: String[];
 
+		try { fsout = fs.readdirSync(path as string); }
+		catch (error) {
+			Debug.error('Error while making videos list: ' + error);
+			return [];
+		}
 		for (let item of fsout) {
 			let ext = item.split('.')[item.split('.').length - 1].toLowerCase();
 

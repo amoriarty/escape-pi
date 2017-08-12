@@ -2,7 +2,10 @@ import * as io from 'socket.io-client';
 import * as Events from 'events';
 import Debug from '../tools/debug.class';
 import Environment from '../tools/environment.class';
-import { ProjectorStatusInterface } from '../projector.interface';
+import {
+	ProjectorStatusInterface,
+	ProjectorVideosInterface
+} from '../projector.interface';
 
 export default class Socket extends Events.EventEmitter {
 	private _socket = io(Environment.socket_url as any);
@@ -18,8 +21,18 @@ export default class Socket extends Events.EventEmitter {
 		this._socket.on('play', () => this.emit('play'));
 	}
 
+	/**
+	 * Send status via socket.
+	 */
 	public set status(status: ProjectorStatusInterface) {
 		this._socket.emit('status', status);
+	}
+
+	/**
+	 * Send videos list via socket.
+	 */
+	public set videos(videos: ProjectorVideosInterface) {
+		this._socket.emit('videos', videos);
 	}
 
 	/**
