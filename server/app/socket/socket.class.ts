@@ -13,6 +13,7 @@ export default class Socket extends EventEmitter {
 
 	constructor(private _socket: SocketIO.Socket) {
 		super();
+		this._socket.on('disconnect', () => this.emit('disconnect'));
 		this._socket.on('whatareyou', (type) => this._whatareyou(type));
 		Debug.log('socket now waiting for type authentification');
 	}
@@ -25,12 +26,18 @@ export default class Socket extends EventEmitter {
 		return this._type || null;
 	}
 
+	/**
+	 * This will trigger class to listen client instance.
+	 */
 	public set client(instance: Client) {
 		instance.on('playlists', (playlists) => this._socket.emit('playlist', playlists));
 		instance.on('status', (status) => this._socket.emit('status', status));
 		instance.on('videos', (videos) => this._socket.emit('videos', videos));
 	}
 
+	/**
+	 * This will trigger class to listen projector instances.
+	 */
 	public set projector(instance: Projector) {
 		instance.on('play', () => this._socket.emit('play'));
 		instance.on('pause', () => this._socket.emit('pause'));

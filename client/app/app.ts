@@ -52,3 +52,33 @@ socket.on('play', () => {
 	Debug.log('server ask to play');
 	player.play();
 });
+
+/**
+ * When received pause command.
+ */
+socket.on('pause', () => {
+	Debug.log('server ask to pause');
+	player.pause();
+});
+
+/**
+ * When received stop command.
+ */
+socket.on('stop', () => {
+	Debug.log('server ask to stop');
+	player.stop();
+});
+
+/**
+ * When received shutdown command.
+ */
+socket.on('shutdown', () => {
+	Debug.log('server ask to shutdown');
+});
+
+/**
+ * When received reboot command.
+ */
+socket.on('reboot', () => {
+	Debug.log('server ask to reboot');
+});

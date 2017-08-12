@@ -19,6 +19,10 @@ export default class Socket extends Events.EventEmitter {
 		this._socket.on('connect', () => { this._connect(); });
 		this._socket.on('disconnect', () => { this._disconnect(); });
 		this._socket.on('play', () => this.emit('play'));
+		this._socket.on('pause', () => this.emit('pause'));
+		this._socket.on('stop', () => this.emit('stop'));
+		this._socket.on('shutdown', () => this.emit('shutdown'));
+		this._socket.on('reboot', () => this.emit('reboot'));
 	}
 
 	/**

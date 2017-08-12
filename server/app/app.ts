@@ -37,6 +37,10 @@ io.on('new', (socket: Socket) => {
 	socket.on('new_angular', () => {
 		angular = new Client(socket);
 
+		angular.on('disconnect', () => {
+			Debug.log('angular disconnect');
+			angular = null;
+		});
 		angular.on('shutdown', (name) => {
 			let projector = projectors.find(Projector.validator(name))
 
@@ -100,6 +104,16 @@ io.on('new', (socket: Socket) => {
 		let projector = new Projector(socket);
 
 		projectors.add = projector;
+		projector.on('disconnect', () => {
+			let status = projector.status;
+
+			Debug.log('projector ' + projector.name + ' disconnect');
+			if (angular) {
+				status.connected = false;
+				angular.status = status;
+			}
+			projectors.del(projector);
+		});
 		projector.on('status', (status) => {
 			if (angular)
 				angular.status = status;

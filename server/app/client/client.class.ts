@@ -18,6 +18,7 @@ export default class Client extends Events.EventEmitter {
 	constructor (private _socket: Socket) {
 		super();
 		this._socket.client = this;
+		this._socket.on('disconnect', (name) => this.emit('disconnect'));
 		this._socket.on('play', (name) => this.emit('play', name));
 		this._socket.on('pause', (name) => this.emit('pause', name));
 		this._socket.on('stop', (name) => this.emit('stop', name));

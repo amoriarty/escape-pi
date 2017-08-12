@@ -25,6 +25,7 @@ export default class Projector extends Events.EventEmitter {
 	constructor(private _socket: Socket) {
 		super();
 		this._socket.projector = this;
+		this._socket.on('disconnect', () => this.emit('disconnect'));
 		this._socket.on('whoareyou', (name) => this._onWhoAreYou(name));
 		this._socket.on('status', (status) => this._onStatus(status));
 		this._socket.on('videos', (videos) => this._videos = videos);
@@ -43,27 +44,27 @@ export default class Projector extends Events.EventEmitter {
 	 * Function will trigger pause event.
 	 */
 	public pause() {
-		this._socket.emit('stop');
+		this.emit('stop');
 	}
 
 	/**
 	 * Function will trigger stop event.
 	 */
 	public stop() {
-		this._socket.emit('stop');
+		this.emit('stop');
 	}
 
 	/**
 	 * Trigger shutdown by raspberry.
 	 */
 	public shutdown() {
-		this._socket.emit('shutdown');
+		this.emit('shutdown');
 	}
 	/**
 	 * Trigger reboot by raspberry.
 	 */
 	public reboot() {
-		this._socket.emit('reboot');
+		this.emit('reboot');
 	}
 
 	/**
