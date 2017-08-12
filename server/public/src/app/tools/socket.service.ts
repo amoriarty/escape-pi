@@ -2,6 +2,16 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { environment } from '../../environments/environment';
 
+export enum EventsEnum {
+  PLAY,
+  PAUSE,
+  STOP,
+  PLAYLIST,
+  SELECT,
+  SHUTDOWN,
+  REBOOT
+}
+
 @Injectable()
 export class SocketService {
   private _socket = io(environment.socket_url);
@@ -23,7 +33,17 @@ export class SocketService {
   /**
    * Accessor for other service to emit events via socket.
    */
-  public get emit() {
-    return this._socket.emit;
+  public emit(event: EventsEnum, ...args: any[]) {
+    switch (event) {
+      case EventsEnum.PLAY:
+        this._socket.emit('play', args[0]);
+        break ;
+      case EventsEnum.PAUSE:
+        this._socket.emit('pause', args[0]);
+        break ;
+      case EventsEnum.STOP:
+        this._socket.emit('stop', args[0]);
+        break ;
+    }
   }
 }

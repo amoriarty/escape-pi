@@ -3,6 +3,7 @@ import * as http from 'http';
 import { EventEmitter } from 'events';
 import Socket from '../socket/socket.class';
 import Debug from '../tools/debug.class';
+import List from '../tools/list.class';
 import { SocketType } from '../socket/socket.interface';
 
 /**
@@ -10,7 +11,7 @@ import { SocketType } from '../socket/socket.interface';
  */
 export default class IO extends EventEmitter {
 	private _socket: SocketIO.Server;
-	private _sockets: Socket[] = [];
+	private _sockets = new List<Socket>();
 
 	/**
 	 * Instanciate an IO class, with the socket.io server.
@@ -34,14 +35,7 @@ export default class IO extends EventEmitter {
 	 * Accessor to sockets objects.
 	 */
 	public get sockets() {
-		let connected: Socket[] = [];
-
-		for (let socket of this._sockets) {
-			if (socket == undefined)
-				continue ;
-			connected.push(socket);
-		}
-		return connected;
+		return this._sockets.items;
 	}
 
 	/**
@@ -51,7 +45,7 @@ export default class IO extends EventEmitter {
 	private _connection(socket: SocketIO.Socket) {
 		let sock = new Socket(socket);
 
-		this._sockets.push(sock);
+		this._sockets.add = sock;
 		this.emit('new', sock);
 		Debug.log('new socket connection');
 	}

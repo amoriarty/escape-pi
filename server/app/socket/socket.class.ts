@@ -16,13 +16,6 @@ export default class Socket extends EventEmitter {
 	}
 
 	/**
-	 * Accessor for adding events listener.
-	 */
-	public get listen() {
-		return this._socket.on;
-	}
-
-	/**
 	 * Accessor for the socket type
 	 * @return A value of SocketType or null.
 	 */
@@ -36,34 +29,22 @@ export default class Socket extends EventEmitter {
 	 */
 	private _whatareyou(type: String) {
 		switch (type) {
-			case "angular":
+			case 'angular':
 				this._type = SocketType.ANGULAR;
+				this._socket.on('play', (name) => this.emit('play', name));
+				this._socket.on('pause', (name) => this.emit('pause', name));
+				this._socket.on('stop', (name) => this.emit('stop', name));
+				this._socket.on('shutdown', (name) => this.emit('shutdown', name));
+				this._socket.on('reboot', (name) => this.emit('reboot', name));
+				this._socket.on('playlist', (playlist) => this.emit('playlist', playlist));
 				this.emit('new_angular');
 				break ;
-			case "raspberry":
+			case 'raspberry':
 				this._type = SocketType.RASPBERRY;
+				this._socket.on('whoareyou', (name) => this.emit('whoareyou', name));
+				this._socket.on('status', (status) => this.emit('status', status));
 				this.emit('new_raspberry');
 				break ;
 		}
 	}
 }
-
-// /**
-//  * Socket class handle every transaction that as to be done via socket.
-//  */
-// export default class Socket {
-// 	protected callbackDisconnect: (instance: Socket) => void;
-
-// 	/**
-// 	 * @param socket An instance of io from socket.io
-// 	 */
-// 	constructor(protected socket) { }
-
-// 	/**
-// 	 * Setter for disconnect callback.
-// 	 */
-// 	set disconnect(callback: (instance: Socket) => void) {
-// 		this.callbackDisconnect = callback;
-// 		this.socket.on('disconnect', (reason) => { this.callbackDisconnect(this); });
-// 	}
-// }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { ProjectorStatusInterface, ProjectorVideosInterface } from './projector.interface';
-import { SocketService } from '../tools/socket.service';
+import { SocketService, EventsEnum } from '../tools/socket.service';
 
 @Injectable()
 export class ProjectorService {
@@ -12,13 +12,13 @@ export class ProjectorService {
    * Send via socket shutdown command for a pi.
    * @param name Name of raspberry to shutdown.
    */
-  shutdown(name: String) { this._socketService.emit('shutdown', name); }
+  shutdown(name: String) { this._socketService.emit(EventsEnum.SHUTDOWN, name); }
 
   /**
    * Send via socket reboot command for a pi.
-   * @param name Send via
+   * @param name Send via socket.
    */
-  reboot(name: String) { this._socketService.emit('reboot', name); }
+  reboot(name: String) { this._socketService.emit(EventsEnum.REBOOT, name); }
 
   /**
    * Return an observable with the status of projector.
