@@ -7,16 +7,18 @@
 <div>
   <div class="status">
     Connected:
-    <app-led [on]="status.connected"></app-led>
+     <app-led [on]="status.connected"></app-led>
   </div>
   <div class="status">
     Now Playing:
-    <app-led [on]="status.playing"></app-led>
+     <app-led [on]="status.playing"></app-led>
   </div>
 </div>
 
 <!-- Player contents. Select video and control it. -->
 <div class="player">
-  <app-selector [list]="videos" [placeholder]="'Video'" (selected)="video"></app-selector>
-  <app-player (onCommand)="playerCommand($event)"></app-player>
+   <app-selector [list]="videos"
+                 [placeholder]="'Video'"
+                 (selected)="select($event)"></app-selector>
+   <app-player (onCommand)="playerCommand($event)"></app-player>
 </div>

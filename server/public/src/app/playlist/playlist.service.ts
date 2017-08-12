@@ -1,40 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
+import { PlaylistInterface, VideoInterface } from './playlist.interface';
 import { SocketService } from '../tools/socket.service';
-import { PlaylistInterface } from './playlist.interface';
+import { ProjectorComponent } from '../projector/projector.component';
 
 @Injectable()
 export class PlaylistService {
+  private _projectors: ProjectorComponent[] = [];
   private _selection: PlaylistInterface = {
     name: "",
     videos: []
   }
 
-  constructor(private _socket: SocketService) { }
+  constructor(private _socketService: SocketService) { }
 
   /**
    * Function to save the current selection.
    */
-  public save() {
+  save() {
     if (this._selection.name == "" || this._selection.videos.length == 0)
       return ;
-    this._socket.emit('playlist', this._selection);
-  }
-
-  /**
-   * Accessor for selection name;
-   */
-  public set name(name: String) {
-    this._selection.name = name;
+    this._socketService.emit('playlist', this._selection);
   }
 
   /**
    * Accessor to playlists observable.
    */
-  public get playlists(): Observable<PlaylistInterface[]> {
+  get playlists(): Observable<PlaylistInterface[]> {
     let observable = new Observable((observer: Observer<PlaylistInterface[]>) => {
-      this._socket.on('playlist', (data: PlaylistInterface[]) => {
+      this._socketService.on('playlist', (data: PlaylistInterface[]) => {
         observer.next(data);
       });
     });
@@ -42,13 +37,47 @@ export class PlaylistService {
     return observable;
   }
 
-  setSelected(pi_name: String, selected: String) {
+  /**
+   * Accessor for selection name;
+   */
+  set name(name: String) {
+    this._selection.name = name;
+  }
+
+  /**
+   * Allow projector to modified the current selection.
+   * @param video selected video.
+   */
+  set selected(video: VideoInterface) {
     for (let item of this._selection.videos) {
-      if (item.name == pi_name) {
-        item.video = selected;
+      if (item.name == video.name) {
+        item.title = video.title;
         return ;
       }
     }
-    this._selection.videos.push({ name: pi_name, video: selected });
+    this._selection.videos.push(video);
+    this._socketService.emit('select', video);
+  }
+
+  /**
+   * Function to call when a playlist is selected.
+   */
+  set playlist(selected: PlaylistInterface) {
+    this._selection = selected;
+    for (let projector of this._projectors) {
+      for (let video of this._selection.videos) {
+        if (projector.name == video.name) {
+          projector.select(video.title);
+          break ;
+        }
+      }
+    }
+  }
+
+  /**
+   * Function to call to register projector and make selection.
+   */
+  set projector(projector: ProjectorComponent) {
+    this._projectors.push(projector);
   }
 }

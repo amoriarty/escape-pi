@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+import { ProjectorStatusInterface, ProjectorVideosInterface } from './projector.interface';
 import { SocketService } from '../tools/socket.service';
-// import { ProjectorComponent } from './projector.component';
 
 @Injectable()
 export class ProjectorService {
@@ -18,15 +20,37 @@ export class ProjectorService {
    */
   reboot(name: String) { this._socketService.emit('reboot', name); }
 
-  // private projectorsArray: ProjectorComponent[] = [];
+  /**
+   * Return an observable with the status of projector.
+   * @param name Raspberry pi name
+   */
+  status(name: String): Observable<ProjectorStatusInterface> {
+    let observable = new Observable<ProjectorStatusInterface>(
+      (observer: Observer<ProjectorStatusInterface>) => {
+        this._socketService.on('status', (status: ProjectorStatusInterface) => {
+          if (status.name == name)
+            observer.next(status);
+        });
+      }
+    );
 
-  // constructor() { }
+    return observable;
+  }
 
-  // set projector(instance: ProjectorComponent) {
-  //   this.projectorsArray.push(instance);
-  // }
+  /**
+   * Return an observable with all videos reading by the projector.
+   * @param name Raspberry pi name.
+   */
+  videos(name: String): Observable<ProjectorVideosInterface> {
+    let observable = new Observable<ProjectorVideosInterface>(
+      (observer: Observer<ProjectorVideosInterface>) => {
+        this._socketService.on('videos', (videos: ProjectorVideosInterface) => {
+          if (videos.name == name)
+            observer.next(videos);
+        });
+      }
+    );
 
-  // get projectors(): ProjectorComponent[] {
-  //   return this.projectorsArray;
-  // }
+    return observable;
+  }
 }

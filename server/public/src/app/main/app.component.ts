@@ -14,8 +14,8 @@ import { PlayerCommand } from '../player/player.interface';
 })
 export class AppComponent {
   title = 'Escape Pi';
-  playlist: PlaylistInterface;
   playlists: PlaylistInterface[] = [];
+  private _playlist: PlaylistInterface;
 
   /**
    * Subscribe to server playlists.
@@ -74,9 +74,10 @@ export class AppComponent {
   select(name: String) {
     for (let playlist of this.playlists) {
       if (playlist.name == name) {
-        this.playlist = playlist;
+        this._playlist = playlist;
         break ;
       }
     }
+    this._playlistsService.playlist = this._playlist;
   }
 }

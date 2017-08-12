@@ -1,18 +1,16 @@
 /**
- * Response interface from sever concerning Pi status.
+ * Type interface of projector status.
  */
-export interface PiStatusInterface {
+export interface ProjectorStatusInterface {
   name: String,
   connected: Boolean,
   playing: Boolean
 }
 
-export interface VideosListInterface {
+/**
+ * Type interface for received list of raspberry videos.
+ */
+export interface ProjectorVideosInterface {
   name: String,
   videos: String[]
-}
-
-export interface SelectedInterface {
-  name: String,
-  video: String
 }
