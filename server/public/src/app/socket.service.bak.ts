@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import * as io from 'socket.io-client';
-import { environment } from '../../environments/environment';
+import { environment } from '../environments/environment';
 
-import { SockTypeInterface } from './socket.interface';
-import { PlaylistInterface } from '../playlist/playlist.interface';
+import { PlaylistInterface } from './playlist/playlist.interface';
 import {
   PiStatusInterface,
   VideosListInterface,
   SelectedInterface
-} from '../projector/projector.interface';
+} from './projector/projector.interface';
 
 @Injectable()
 export class SocketService {

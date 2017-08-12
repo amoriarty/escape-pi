@@ -14,7 +14,7 @@ export class LedComponent implements OnInit {
   /**
    * Computed function to make led green or light if on is true or false.
    */
-  get computedColor(): String {
+  get color(): String {
     return (this.on == true) ? "green" : "red";
   }
 }

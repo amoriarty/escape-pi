@@ -5,16 +5,17 @@ import { FormsModule } from '@angular/forms';
 import 'hammerjs';
 
 import { MaterialModule } from './material.module';
-import { AppComponent } from './app.component';
+import { AppComponent } from './main/app.component';
 import { PlayerComponent } from './player/player.component';
 import { ProjectorComponent } from './projector/projector.component';
 import { LedComponent } from './led/led.component';
 import { PlaylistComponent } from './playlist/playlist.component';
-
-import { SocketService } from './socket/socket.service';
+import { SelectorComponent } from './selector/selector.component';
+import { SocketService } from './tools/socket.service';
+import { PlayerService } from './player/player.service';
 import { PlaylistService } from './playlist/playlist.service';
 import { ProjectorService } from './projector/projector.service';
-import { CapitalizePipe } from './capitalize.pipe';
+import { CapitalizePipe } from './tools/capitalize.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { CapitalizePipe } from './capitalize.pipe';
     ProjectorComponent,
     LedComponent,
     PlaylistComponent,
-    CapitalizePipe
+    CapitalizePipe,
+    SelectorComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +38,7 @@ import { CapitalizePipe } from './capitalize.pipe';
   ],
   providers: [
     SocketService,
+    PlayerService,
     PlaylistService,
     ProjectorService
   ],

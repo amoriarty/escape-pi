@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { PlayerCommand } from "./player.interface";
 
 @Component({
   selector: 'app-player',
@@ -6,12 +7,15 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit {
-  @Output() onCommand: EventEmitter<String> = new EventEmitter();
+  @Output() onCommand: EventEmitter<PlayerCommand> = new EventEmitter();
 
   constructor() { }
   ngOnInit() { }
 
-  play(): void { this.onCommand.emit("play"); }
-  pause(): void { this.onCommand.emit("pause"); }
-  stop(): void { this.onCommand.emit("stop"); }
+  /**
+   * Simply send corresponding event for parent component.
+   */
+  play(): void { this.onCommand.emit(PlayerCommand.PLAY); }
+  pause(): void { this.onCommand.emit(PlayerCommand.PAUSE); }
+  stop(): void { this.onCommand.emit(PlayerCommand.STOP); }
 }

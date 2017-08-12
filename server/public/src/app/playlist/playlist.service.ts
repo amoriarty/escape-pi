@@ -1,33 +1,54 @@
 import { Injectable } from '@angular/core';
-import { SocketService } from '../socket/socket.service';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+import { SocketService } from '../tools/socket.service';
 import { PlaylistInterface } from './playlist.interface';
 
 @Injectable()
 export class PlaylistService {
-  private playlist: PlaylistInterface = {
+  private _selection: PlaylistInterface = {
     name: "",
     videos: []
   }
 
-  constructor(private socket: SocketService) { }
+  constructor(private _socket: SocketService) { }
 
-  set name(name: String) {
-    this.playlist.name = name;
+  /**
+   * Function to save the current selection.
+   */
+  public save() {
+    if (this._selection.name == "" || this._selection.videos.length == 0)
+      return ;
+    this._socket.emit('playlist', this._selection);
+  }
+
+  /**
+   * Accessor for selection name;
+   */
+  public set name(name: String) {
+    this._selection.name = name;
+  }
+
+  /**
+   * Accessor to playlists observable.
+   */
+  public get playlists(): Observable<PlaylistInterface[]> {
+    let observable = new Observable((observer: Observer<PlaylistInterface[]>) => {
+      this._socket.on('playlist', (data: PlaylistInterface[]) => {
+        observer.next(data);
+      });
+    });
+
+    return observable;
   }
 
   setSelected(pi_name: String, selected: String) {
-    for (let item of this.playlist.videos) {
+    for (let item of this._selection.videos) {
       if (item.name == pi_name) {
         item.video = selected;
         return ;
       }
     }
-    this.playlist.videos.push({ name: pi_name, video: selected });
-  }
-
-  save() {
-    if (this.playlist.name == "" || this.playlist.videos.length == 0)
-      return ;
-    this.socket.sendPlaylist(this.playlist);
+    this._selection.videos.push({ name: pi_name, video: selected });
   }
 }

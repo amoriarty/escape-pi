@@ -3,19 +3,20 @@
   <span>{{ title }}</span>
   <span class="fill-space"></span>
   <span>
-    <md-select placeholder="Playlist" [(ngModel)]="selected">
-      <md-option *ngFor="let playlist of playlists" [value]="playlist" (click)="selection()">{{ playlist.name }}</md-option>
-    </md-select>
+    <app-selector [placeholder]="'Playlist'"
+                  [list]="names"
+                  (selected)="select($event)">
+    </app-selector>
     <app-player (onCommand)="playerCommand($event)"></app-player>
   </span>
 </md-toolbar>
 
 <!-- Projectors grid -->
-<md-grid-list cols="3" rowHeight="2:1">
+ <!-- <md-grid-list cols="3" rowHeight="2:1">
   <md-grid-tile><app-projector name="yharnam"></app-projector></md-grid-tile>
   <md-grid-tile><app-projector name="lothric"></app-projector></md-grid-tile>
   <md-grid-tile><app-projector name="boletaria"></app-projector></md-grid-tile>
-</md-grid-list>
+</md-grid-list> -->
 
 <!-- Add playlist button -->
-<button md-fab color="primary" (click)="savePlaylist()"><md-icon>add</md-icon></button>
+<!-- <button md-fab color="primary" (click)="playlistPopup()"><md-icon>add</md-icon></button>  -->

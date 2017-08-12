@@ -11,14 +11,17 @@ import { PlaylistService } from './playlist.service';
 export class PlaylistComponent implements OnInit {
   name = "";
 
-  constructor(public dialog: MdDialog, private playlist: PlaylistService) { }
+  constructor(public dialog: MdDialog, private _playlistService: PlaylistService) { }
   ngOnInit() { }
 
-  savePlaylist() {
+  /**
+   * Ask service to save the current selection as a playlist.
+   */
+  save() {
     if (this.name == "")
       return ;
-    this.playlist.name = this.name;
-    this.playlist.save();
+    this._playlistService.name = this.name;
+    this._playlistService.save();
     this.dialog.closeAll();
   }
 }

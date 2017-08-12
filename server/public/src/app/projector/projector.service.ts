@@ -1,17 +1,32 @@
 import { Injectable } from '@angular/core';
-import { ProjectorComponent } from './projector.component';
+import { SocketService } from '../tools/socket.service';
+// import { ProjectorComponent } from './projector.component';
 
 @Injectable()
 export class ProjectorService {
-  private projectorsArray: ProjectorComponent[] = [];
+  constructor(private _socketService: SocketService) {}
 
-  constructor() { }
+  /**
+   * Send via socket shutdown command for a pi.
+   * @param name Name of raspberry to shutdown.
+   */
+  shutdown(name: String) { this._socketService.emit('shutdown', name); }
 
-  set projector(instance: ProjectorComponent) {
-    this.projectorsArray.push(instance);
-  }
+  /**
+   * Send via socket reboot command for a pi.
+   * @param name Send via
+   */
+  reboot(name: String) { this._socketService.emit('reboot', name); }
 
-  get projectors(): ProjectorComponent[] {
-    return this.projectorsArray;
-  }
+  // private projectorsArray: ProjectorComponent[] = [];
+
+  // constructor() { }
+
+  // set projector(instance: ProjectorComponent) {
+  //   this.projectorsArray.push(instance);
+  // }
+
+  // get projectors(): ProjectorComponent[] {
+  //   return this.projectorsArray;
+  // }
 }
