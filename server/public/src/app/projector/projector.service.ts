@@ -12,13 +12,17 @@ export class ProjectorService {
    * Send via socket shutdown command for a pi.
    * @param name Name of raspberry to shutdown.
    */
-  shutdown(name: String) { this._socketService.emit(EventsEnum.SHUTDOWN, name); }
+  shutdown(name: String) {
+    this._socketService.send(EventsEnum.SHUTDOWN, name);
+  }
 
   /**
    * Send via socket reboot command for a pi.
    * @param name Send via socket.
    */
-  reboot(name: String) { this._socketService.emit(EventsEnum.REBOOT, name); }
+  reboot(name: String) {
+    this._socketService.send(EventsEnum.REBOOT, name);
+  }
 
   /**
    * Return an observable with the status of projector.
@@ -27,7 +31,7 @@ export class ProjectorService {
   status(name: String): Observable<ProjectorStatusInterface> {
     let observable = new Observable<ProjectorStatusInterface>(
       (observer: Observer<ProjectorStatusInterface>) => {
-        this._socketService.on('status', (status: ProjectorStatusInterface) => {
+        this._socketService.emitter.on('status', (status: ProjectorStatusInterface) => {
           if (status.name == name)
             observer.next(status);
         });
@@ -44,7 +48,7 @@ export class ProjectorService {
   videos(name: String): Observable<ProjectorVideosInterface> {
     let observable = new Observable<ProjectorVideosInterface>(
       (observer: Observer<ProjectorVideosInterface>) => {
-        this._socketService.on('videos', (videos: ProjectorVideosInterface) => {
+        this._socketService.emitter.on('videos', (videos: ProjectorVideosInterface) => {
           if (videos.name == name)
             observer.next(videos);
         });

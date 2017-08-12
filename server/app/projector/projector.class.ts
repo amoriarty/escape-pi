@@ -11,8 +11,12 @@ import {
  */
 export default class Projector extends Events.EventEmitter {
 	private _name: String;
-	private _status: ProjectorStatusInterface;
 	private _videos: ProjectorVideosInterface;
+	private _status: ProjectorStatusInterface = {
+		name: this.name,
+		connected: false,
+		playing: false
+	};
 
 	/**
 	 * Will listen all raspberry emittion.
@@ -20,8 +24,10 @@ export default class Projector extends Events.EventEmitter {
 	 */
 	constructor(private _socket: Socket) {
 		super();
-		this._socket.on('whoareyou', (name) => this._name = name);
+		this._socket.projector = this;
+		this._socket.on('whoareyou', (name) => this._onWhoAreYou(name));
 		this._socket.on('status', (status) => this._onStatus(status));
+		this._status.connected = true;
 		Debug.log('new projector connected');
 	}
 
@@ -29,34 +35,34 @@ export default class Projector extends Events.EventEmitter {
 	 * Function will trigger play event.
 	 */
 	public play() {
-		// this._socket.send('play');
+		this.emit('play');
 	}
 
 	/**
 	 * Function will trigger pause event.
 	 */
 	public pause() {
-		// this._socket.send('stop');
+		this._socket.emit('stop');
 	}
 
 	/**
 	 * Function will trigger stop event.
 	 */
 	public stop() {
-		// this._socket.send('stop');
+		this._socket.emit('stop');
 	}
 
 	/**
 	 * Trigger shutdown by raspberry.
 	 */
 	public shutdown() {
-		// this._socket.send('shutdown');
+		this._socket.emit('shutdown');
 	}
 	/**
 	 * Trigger reboot by raspberry.
 	 */
 	public reboot() {
-		// this._socket.send('reboot');
+		this._socket.emit('reboot');
 	}
 
 	/**
@@ -105,5 +111,14 @@ export default class Projector extends Events.EventEmitter {
 	private _onVideos(videos: ProjectorVideosInterface) {
 		this._videos = videos;
 		this.emit('videos', videos);
+	}
+
+	/**
+	 * Function when projector send is name.
+	 * @param name Name of projector
+	 */
+	private _onWhoAreYou(name: String) {
+		this._name = name;
+		this._status.name = name;
 	}
 }

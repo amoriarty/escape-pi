@@ -17,6 +17,7 @@ export default class Client extends Events.EventEmitter {
 	 */
 	constructor (private _socket: Socket) {
 		super();
+		this._socket.client = this;
 		this._socket.on('play', (name) => this.emit('play', name));
 		this._socket.on('pause', (name) => this.emit('pause', name));
 		this._socket.on('stop', (name) => this.emit('stop', name));
@@ -31,23 +32,23 @@ export default class Client extends Events.EventEmitter {
 	 * @param playlists Playlists to send to angular client.
 	 */
 	public set playlists(playlists: PlaylistInterface[]) {
-		// if (playlists)
-		// this._socket.send('playlists', playlists);
+		if (playlists)
+		this.emit('playlists', playlists);
 	}
 
 	/**
 	 * Function to call when status change.
 	 */
 	public set status(status: ProjectorStatusInterface) {
-		// if (status)
-			// this._socket.send('status', status);
+		if (status)
+			this.emit('status', status);
 	}
 
 	/**
 	 * Function to call to send all videos of a projector.
 	 */
 	public set videos(videos: ProjectorVideosInterface) {
-		// if (videos)
-			// this._socket.send('videos', videos);
+		if (videos)
+			this.emit('videos', videos);
 	}
 }

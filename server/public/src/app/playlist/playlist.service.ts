@@ -21,7 +21,7 @@ export class PlaylistService {
   save() {
     if (this._selection.name == "" || this._selection.videos.length == 0)
       return ;
-    this._socketService.emit(EventsEnum.PLAYLIST, this._selection);
+    this._socketService.send(EventsEnum.PLAYLIST, this._selection);
   }
 
   /**
@@ -29,7 +29,7 @@ export class PlaylistService {
    */
   get playlists(): Observable<PlaylistInterface[]> {
     let observable = new Observable((observer: Observer<PlaylistInterface[]>) => {
-      this._socketService.on('playlists', (data: PlaylistInterface[]) => {
+      this._socketService.emitter.on('playlists', (data: PlaylistInterface[]) => {
         observer.next(data);
       });
     });
@@ -56,7 +56,7 @@ export class PlaylistService {
       }
     }
     this._selection.videos.push(video);
-    this._socketService.emit(EventsEnum.SELECT, video);
+    this._socketService.send(EventsEnum.SELECT, video);
   }
 
   /**

@@ -1,6 +1,8 @@
 import 'socket.io';
 import { EventEmitter } from "events";
 import Debug from '../tools/debug.class';
+import Client from '../client/client.class';
+import Projector from '../projector/projector.class';
 import { SocketType } from './socket.interface';
 
 /**
@@ -21,6 +23,20 @@ export default class Socket extends EventEmitter {
 	 */
 	public get type() {
 		return this._type || null;
+	}
+
+	public set client(instance: Client) {
+		instance.on('playlists', (playlists) => this._socket.emit('playlist', playlists));
+		instance.on('status', (status) => this._socket.emit('status', status));
+		instance.on('videos', (videos) => this._socket.emit('videos', videos));
+	}
+
+	public set projector(instance: Projector) {
+		instance.on('play', () => this._socket.emit('play'));
+		instance.on('pause', () => this._socket.emit('pause'));
+		instance.on('stop', () => this._socket.emit('stop'));
+		instance.on('shutdown', () => this._socket.emit('shutdown'));
+		instance.on('reboot', () => this._socket.emit('reboot'));
 	}
 
 	/**
