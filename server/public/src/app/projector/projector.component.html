@@ -18,6 +18,7 @@
 <!-- Player contents. Select video and control it. -->
 <div class="player">
    <app-selector [list]="videos"
+                 [(model)]="video"
                  [placeholder]="'Video'"
                  (selected)="select($event)"></app-selector>
    <app-player (onCommand)="playerCommand($event)"></app-player>
