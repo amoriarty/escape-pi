@@ -32,7 +32,9 @@ export default class Debug {
 	 */
 	public static error(message?: any, ...optionalParams: any[]) {
 		if (this.on) {
-			console.error(message, optionalParams);
+			console.error(message);
+			for (let item of optionalParams)
+				console.log(item);
 		}
 	}
 }

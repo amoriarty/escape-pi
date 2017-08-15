@@ -51,6 +51,9 @@ io.on('new', (socket: Socket) => {
 	socket.on('new_angular', () => {
 		Angular = new Client(socket);
 
+		Playlists.on('playlists', () => {
+			Angular.playlists = Playlists.playlists;
+		});
 		Angular.on('disconnect', () => {
 			Debug.log('angular disconnect');
 			Angular = null;
@@ -104,7 +107,6 @@ io.on('new', (socket: Socket) => {
 		});
 		Angular.on('playlist', (playlist: PlaylistInterface) => {
 			Playlists.playlist = playlist;
-			Angular.playlists = Playlists.playlists;
 		});
 		for (let projector of Projectors.items) {
 			Angular.status = projector.status;

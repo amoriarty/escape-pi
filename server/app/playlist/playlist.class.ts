@@ -4,11 +4,12 @@ import Environment from '../tools/environment.class';
 import Debug from '../tools/debug.class';
 import { PlaylistInterface } from './playlist.interface';
 
-export default class Playlist {
+export default class Playlist extends Events.EventEmitter {
 	private _collection: mongodb.Collection;
 	private _playlists: PlaylistInterface[];
 
 	constructor() {
+		super();
 		new mongodb.MongoClient().connect(Environment.mongodb_url as string, (err, db) => {
 			if (!err) {
 				Debug.log('mongodb connected')
@@ -36,6 +37,7 @@ export default class Playlist {
 				Debug.error('playlist wasn\'t saved: ' + err);
 			else {
 				this._playlists.push(playlist);
+				this.emit('playlists');
 				Debug.log('playlist ' + playlist.name + ' succesfully saved');
 			}
 		});

@@ -34,7 +34,7 @@ export default class Client extends Events.EventEmitter {
 	 */
 	public set playlists(playlists: PlaylistInterface[]) {
 		if (playlists)
-		this.emit('playlists', playlists);
+			this.emit('playlists', playlists);
 	}
 
 	/**

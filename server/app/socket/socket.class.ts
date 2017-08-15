@@ -30,7 +30,7 @@ export default class Socket extends EventEmitter {
 	 * This will trigger class to listen client instance.
 	 */
 	public set client(instance: Client) {
-		instance.on('playlists', (playlists) => this._socket.emit('playlist', playlists));
+		instance.on('playlists', (playlists) => this._socket.emit('playlists', playlists));
 		instance.on('status', (status) => this._socket.emit('status', status));
 		instance.on('videos', (videos) => this._socket.emit('videos', videos));
 	}
