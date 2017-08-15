@@ -1,10 +1,11 @@
+import * as path from 'path';
 import Environment from './tools/environment.class';
 import Debug from './tools/debug.class';
 import Socket from './socket/socket.class';
 import Player from "./player/player.class";
 import Power from "./power/power.class";
 import FileSystem from './fs/fs.class';
-import { ProjectorStatusInterface } from './projector.interface';
+import { ProjectorStatusInterface } from './tools/projector.interface';
 
 let player: Player;
 let socket: Socket;
@@ -29,7 +30,8 @@ player = new Player();
 status = {
 	name: Environment.pi_name,
 	connected: false,
-	playing: false
+	playing: false,
+	loaded: false
 };
 
 /**
@@ -50,6 +52,8 @@ socket.on('connect', () => {
 socket.on('play', () => {
 	Debug.log('server ask to play');
 	player.play();
+	status.loaded = player.loaded;
+	status.playing = player.playling;
 });
 
 /**
@@ -58,6 +62,8 @@ socket.on('play', () => {
 socket.on('pause', () => {
 	Debug.log('server ask to pause');
 	player.pause();
+	status.loaded = player.loaded;
+	status.playing = player.playling;
 });
 
 /**
@@ -66,6 +72,8 @@ socket.on('pause', () => {
 socket.on('stop', () => {
 	Debug.log('server ask to stop');
 	player.stop();
+	status.loaded = player.loaded;
+	status.playing = player.playling;
 });
 
 /**
@@ -88,5 +96,10 @@ socket.on('reboot', () => {
  * When received a video selection to load.
  */
 socket.on('select', (video: String) => {
+	let complete_path = path.resolve(Environment.videos_path, video);
+
 	Debug.log('server ask to load ' + video);
+	player.video = complete_path;
+	status.loaded = player.loaded;
+	status.playing = player.playling;
 });

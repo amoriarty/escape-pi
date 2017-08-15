@@ -5,7 +5,7 @@ import Environment from '../tools/environment.class';
 import {
 	ProjectorStatusInterface,
 	ProjectorVideosInterface
-} from '../projector.interface';
+} from '../tools/projector.interface';
 
 export default class Socket extends Events.EventEmitter {
 	private _socket = io(Environment.socket_url as any);

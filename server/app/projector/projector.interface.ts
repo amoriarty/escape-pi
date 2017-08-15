@@ -4,7 +4,8 @@
 export interface ProjectorStatusInterface {
 	name: String,
 	connected: Boolean,
-	playing: Boolean
+	playing: Boolean,
+	loaded: Boolean
 }
 
 /**

@@ -15,7 +15,8 @@ export default class Projector extends Events.EventEmitter {
 	private _status: ProjectorStatusInterface = {
 		name: this.name,
 		connected: false,
-		playing: false
+		playing: false,
+		loaded: false
 	};
 
 	/**
@@ -44,7 +45,7 @@ export default class Projector extends Events.EventEmitter {
 	 * Function will trigger pause event.
 	 */
 	public pause() {
-		this.emit('stop');
+		this.emit('pause');
 	}
 
 	/**
