@@ -8,7 +8,6 @@ import { ProjectorStatusInterface } from './projector.interface';
 
 let player: Player;
 let socket: Socket;
-let power: Power;
 let status: ProjectorStatusInterface;
 
 /**
@@ -74,6 +73,7 @@ socket.on('stop', () => {
  */
 socket.on('shutdown', () => {
 	Debug.log('server ask to shutdown');
+	Power.shutdown();
 });
 
 /**
@@ -81,6 +81,7 @@ socket.on('shutdown', () => {
  */
 socket.on('reboot', () => {
 	Debug.log('server ask to reboot');
+	Power.reboot();
 });
 
 /**

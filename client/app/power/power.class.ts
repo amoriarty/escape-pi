@@ -1,19 +1,18 @@
 import * as exec from 'child_process';
+import Debug from '../tools/debug.class';
 
 export default class Power {
-	shutdown() {
-		exec.execSync('shutdown -h now');
-	}
-
-	reboot() {
-		exec.execSync('reboot');
-	}
-
-	killomx() {
-		try {
-			exec.execSync('killall omxplayer.bin');
-			exec.execSync('killall omxplayer');
+	public static shutdown() {
+		try { exec.execSync('shutdown -h now'); }
+		catch (error) {
+			Debug.error('An error occures when trying to shutdown: ' + error);
 		}
-		catch (error) { }
+	}
+
+	public static reboot() {
+		try { exec.execSync('reboot'); }
+		catch (error) {
+			Debug.error('An error occures when trying to reboot: ' + error);
+		}
 	}
 }
