@@ -8,13 +8,16 @@ import IO from './io/io.class';
 import Socket from './socket/socket.class';
 import Client from './client/client.class';
 import Projector from './projector/projector.class';
+import Playist from './playlist/playlist.class';
+import { PlaylistInterface } from './playlist/playlist.interface';
 import { SocketType } from './socket/socket.interface';
 
-let app = express();
-let server = http.createServer(app);
+let App = express();
+let Server = http.createServer(App);
 let io: IO;
-let angular: Client;
-let projectors = new List<Projector>();
+let Angular: Client;
+let Playlists: Playist;
+let Projectors = new List<Projector>();
 
 /**
  * Check for undefined environment variables.
@@ -26,74 +29,87 @@ if (!Environment.check()) {
 Debug.log('all environment variables are set');
 
 /**
+ * Initialize playlist for connect mongodb as fast as possible.
+ */
+try { Playlists = new Playist(); }
+catch (error) {
+	Debug.error('playlist initialization failed');
+	Debug.error(error);
+	process.exit(-1);
+}
+
+
+/**
  * Initialiaze IO class.
  * Initialiaze Socket connections.
  */
-io = new IO(server);
+io = new IO(Server);
 io.on('new', (socket: Socket) => {
 	/**
 	 * Angular client connection.
 	 */
 	socket.on('new_angular', () => {
-		angular = new Client(socket);
+		Angular = new Client(socket);
 
-		angular.on('disconnect', () => {
+		Angular.on('disconnect', () => {
 			Debug.log('angular disconnect');
-			angular = null;
+			Angular = null;
 		});
-		angular.on('shutdown', (name) => {
-			let projector = projectors.find(Projector.validator(name))
+		Angular.on('shutdown', (name: String) => {
+			let projector = Projectors.find(Projector.validator(name))
 
 			Debug.log('angular ask ' + name + ' to shutdown');
 			if (projector)
 				projector.shutdown();
 		});
-		angular.on('reboot', (name) => {
-			let projector = projectors.find(Projector.validator(name));
+		Angular.on('reboot', (name: String) => {
+			let projector = Projectors.find(Projector.validator(name));
 
 			Debug.log('angular ask ' + name + ' to reboot');
 			if (projector)
 				projector.reboot();
 		});
-		angular.on('play', (name) => {
+		Angular.on('play', (name: String) => {
 			Debug.log('angular ask ' + name + ' to play');
 			if (name == 'all')
 				Debug.log('DEBUG: SEND PLAY TO ALL');
 			else {
-				let projector = projectors.find(Projector.validator(name));
+				let projector = Projectors.find(Projector.validator(name));
 
 				if (projector)
 					projector.play();
 			}
 		});
-		angular.on('pause', (name) => {
+		Angular.on('pause', (name: String) => {
 			Debug.log('angular ask ' + name + ' to pause');
 			if (name == 'all')
 				Debug.log('DEBUG: SEND PAUSE TO ALL');
 			else {
-				let projector = projectors.find(Projector.validator(name));
+				let projector = Projectors.find(Projector.validator(name));
 
 				if (projector)
 					projector.pause();
 			}
 		});
-		angular.on('stop', (name) => {
+		Angular.on('stop', (name: String) => {
 			Debug.log('angular ask ' + name + ' to stop');
 			if (name == 'all')
 				Debug.log('DEBUG: SEND STOP TO ALL');
 			else {
-				let projector = projectors.find(Projector.validator(name));
+				let projector = Projectors.find(Projector.validator(name));
 
 				if (projector)
 					projector.stop();
 			}
 		});
-		angular.on('playlist', (playlist) => {
-			Debug.log('DEBUG: Playist received from angular');
+		Angular.on('playlist', (playlist: PlaylistInterface) => {
+			Playlists.playlist = playlist;
+			Angular.playlists = Playlists.playlists;
 		});
-		for (let projector of projectors.items) {
-			angular.status = projector.status;
-			angular.videos = projector.videos;
+		for (let projector of Projectors.items) {
+			Angular.status = projector.status;
+			Angular.videos = projector.videos;
+			Angular.playlists = Playlists.playlists;
 		}
 	});
 
@@ -103,24 +119,24 @@ io.on('new', (socket: Socket) => {
 	socket.on('new_raspberry', () => {
 		let projector = new Projector(socket);
 
-		projectors.add = projector;
+		Projectors.add = projector;
 		projector.on('disconnect', () => {
 			let status = projector.status;
 
 			Debug.log('projector ' + projector.name + ' disconnect');
-			if (angular) {
+			if (Angular) {
 				status.connected = false;
-				angular.status = status;
+				Angular.status = status;
 			}
-			projectors.del(projector);
+			Projectors.del(projector);
 		});
 		projector.on('status', (status) => {
-			if (angular)
-				angular.status = status;
+			if (Angular)
+				Angular.status = status;
 		});
 		projector.on('videos', (videos) => {
-			if (angular)
-				angular.videos = videos;
+			if (Angular)
+				Angular.videos = videos;
 		});
 	});
 });
@@ -128,7 +144,7 @@ io.on('new', (socket: Socket) => {
 /**
  * Express configuration for serving angular application.
  */
-app.use(express.static(__dirname + '/../public/dist'));
-server.listen(Environment.port || 8080, () => {
+App.use(express.static(__dirname + '/../public/dist'));
+Server.listen(Environment.port || 8080, () => {
 	Debug.log("server listening on port " + Environment.port);
 });
