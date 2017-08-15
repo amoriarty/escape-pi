@@ -25,6 +25,7 @@ export default class Client extends Events.EventEmitter {
 		this._socket.on('shutdown', (name) => this.emit('shutdown', name));
 		this._socket.on('reboot', (name) => this.emit('reboot', name));
 		this._socket.on('playlist', (playlist) => this.emit('playlist', playlist));
+		this._socket.on('select', (video) => this.emit('select', video));
 		Debug.log('angular client connected');
 	}
 

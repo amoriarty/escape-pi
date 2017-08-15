@@ -9,7 +9,7 @@ import Socket from './socket/socket.class';
 import Client from './client/client.class';
 import Projector from './projector/projector.class';
 import Playist from './playlist/playlist.class';
-import { PlaylistInterface } from './playlist/playlist.interface';
+import { PlaylistInterface, VideoInterface } from './playlist/playlist.interface';
 import { SocketType } from './socket/socket.interface';
 
 let App = express();
@@ -107,6 +107,13 @@ io.on('new', (socket: Socket) => {
 		});
 		Angular.on('playlist', (playlist: PlaylistInterface) => {
 			Playlists.playlist = playlist;
+		});
+		Angular.on('select', (video: VideoInterface) => {
+			let projector = Projectors.find(Projector.validator(video.name));
+
+			Debug.log('angular ask ' + video.name + ' to load ' + video.title);
+			if (projector)
+				projector.select = video.title;
 		});
 		for (let projector of Projectors.items) {
 			Angular.status = projector.status;

@@ -82,3 +82,10 @@ socket.on('shutdown', () => {
 socket.on('reboot', () => {
 	Debug.log('server ask to reboot');
 });
+
+/**
+ * When received a video selection to load.
+ */
+socket.on('select', (video: String) => {
+	Debug.log('server ask to load ' + video);
+});

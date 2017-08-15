@@ -44,6 +44,7 @@ export default class Socket extends EventEmitter {
 		instance.on('stop', () => this._socket.emit('stop'));
 		instance.on('shutdown', () => this._socket.emit('shutdown'));
 		instance.on('reboot', () => this._socket.emit('reboot'));
+		instance.on('select', (video: String) => this._socket.emit('select', video));
 	}
 
 	/**
@@ -60,6 +61,7 @@ export default class Socket extends EventEmitter {
 				this._socket.on('shutdown', (name) => this.emit('shutdown', name));
 				this._socket.on('reboot', (name) => this.emit('reboot', name));
 				this._socket.on('playlist', (playlist) => this.emit('playlist', playlist));
+				this._socket.on('select', (video) => this.emit('select', video));
 				this.emit('new_angular');
 				break ;
 			case 'raspberry':

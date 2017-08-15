@@ -52,6 +52,7 @@ export class PlaylistService {
     for (let item of this._selection.videos) {
       if (item.name == video.name) {
         item.title = video.title;
+        this._socketService.send(EventsEnum.SELECT, video);
         return ;
       }
     }

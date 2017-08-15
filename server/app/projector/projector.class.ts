@@ -97,6 +97,10 @@ export default class Projector extends Events.EventEmitter {
 		return this._videos;
 	}
 
+	public set select(title: String) {
+		this.emit('select', title);
+	}
+
 	/**
 	 * Function call when raspberry update is status.
 	 * @param status Status received from projector.

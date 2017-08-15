@@ -23,6 +23,7 @@ export default class Socket extends Events.EventEmitter {
 		this._socket.on('stop', () => this.emit('stop'));
 		this._socket.on('shutdown', () => this.emit('shutdown'));
 		this._socket.on('reboot', () => this.emit('reboot'));
+		this._socket.on('select', (video) => this.emit('select', video));
 	}
 
 	/**
