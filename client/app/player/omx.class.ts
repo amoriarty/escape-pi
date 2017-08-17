@@ -41,6 +41,7 @@ export default class Omx {
 		if (this._process)
 			this.quit();
 		this._process = ChildProcess.spawn('omxplayer', [ path as string ], {});
+		this.pause();
 		this._loaded = true;
 	}
 

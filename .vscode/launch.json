@@ -28,7 +28,7 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Client",
+			"name": "Yharnam",
 			"program": "${workspaceRoot}/client/app/app.ts",
 			"stopOnEntry": false,
 			"args": [],
@@ -40,6 +40,48 @@
 				"NODE_ENV": "development",
 				"SOCKET_URL": "http://localhost:8080",
 				"PI_NAME": "yharnam",
+				"VIDEOS_PATH": "/tmp/videos"
+			},
+			"outFiles": [
+				"${workspaceRoot}/client/build/app.js"
+			]
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Lothric",
+			"program": "${workspaceRoot}/client/app/app.ts",
+			"stopOnEntry": false,
+			"args": [],
+			"cwd": "${workspaceRoot}/client",
+			"sourceMaps": true,
+			"runtimeExecutable": null,
+			"preLaunchTask": "TypescriptClient",
+			"env": {
+				"NODE_ENV": "development",
+				"SOCKET_URL": "http://localhost:8080",
+				"PI_NAME": "lothric",
+				"VIDEOS_PATH": "/tmp/videos"
+			},
+			"outFiles": [
+				"${workspaceRoot}/client/build/app.js"
+			]
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Boletaria",
+			"program": "${workspaceRoot}/client/app/app.ts",
+			"stopOnEntry": false,
+			"args": [],
+			"cwd": "${workspaceRoot}/client",
+			"sourceMaps": true,
+			"runtimeExecutable": null,
+			"preLaunchTask": "TypescriptClient",
+			"env": {
+				"NODE_ENV": "development",
+				"SOCKET_URL": "http://localhost:8080",
+				"PI_NAME": "boletaria",
 				"VIDEOS_PATH": "/tmp/videos"
 			},
 			"outFiles": [

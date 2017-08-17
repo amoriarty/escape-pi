@@ -33,10 +33,10 @@ export default class Player {
 	 * Function will ask player to play.
 	 */
 	public play() {
-		if (this._omx.loaded) return ;
+		if (!this._omx.loaded) return ;
 		if (this.playling) return ;
-		this._omx.pause();
-		this._playing = false;
+		this._omx.play();
+		this._playing = true;
 	}
 
 	/**
@@ -45,8 +45,8 @@ export default class Player {
 	public pause() {
 		if (!this._omx.loaded) return ;
 		if (!this.playling) return ;
-		this._omx.play();
-		this._playing = true;
+		this._omx.pause();
+		this._playing = false;
 	}
 
 	/**
@@ -55,7 +55,11 @@ export default class Player {
 	 */
 	public stop() {
 		if (!this._omx.loaded) return ;
-		if (!this._path) return ;
+		this._playing = false;
+		if (!this._path) {
+			this._omx.quit();
+			return ;
+		}
 		this._load();
 	}
 

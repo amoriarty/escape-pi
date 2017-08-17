@@ -54,6 +54,7 @@ socket.on('play', () => {
 	player.play();
 	status.loaded = player.loaded;
 	status.playing = player.playling;
+	socket.status = status;
 });
 
 /**
@@ -64,6 +65,7 @@ socket.on('pause', () => {
 	player.pause();
 	status.loaded = player.loaded;
 	status.playing = player.playling;
+	socket.status = status;
 });
 
 /**
@@ -74,6 +76,7 @@ socket.on('stop', () => {
 	player.stop();
 	status.loaded = player.loaded;
 	status.playing = player.playling;
+	socket.status = status;
 });
 
 /**
@@ -102,4 +105,5 @@ socket.on('select', (video: String) => {
 	player.video = complete_path;
 	status.loaded = player.loaded;
 	status.playing = player.playling;
+	socket.status = status;
 });
