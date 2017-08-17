@@ -74,16 +74,8 @@ io.on('new', (socket: Socket) => {
 		});
 		Angular.on('play', (name: String) => {
 			Debug.log('angular ask ' + name + ' to play');
-			if (name == 'all') {
-				let interval = setInterval(() => {
-					let ready = Projectors.items.filter((projector) => projector.status.loaded == true);
-
-					if (Projectors.items.length == ready.length) {
-						Projectors.items.forEach((projector) => projector.emit('play'));
-						clearInterval(interval);
-					}
-				}, 10);
-			}
+			if (name == 'all')
+				Projectors.items.forEach((projector) => projector.emit('play'));
 			else {
 				let projector = Projectors.find(Projector.validator(name));
 
@@ -93,16 +85,8 @@ io.on('new', (socket: Socket) => {
 		});
 		Angular.on('pause', (name: String) => {
 			Debug.log('angular ask ' + name + ' to pause');
-			if (name == 'all') {
-				let interval = setInterval(() => {
-					let ready = Projectors.items.filter((projector) => projector.status.loaded == true);
-
-					if (Projectors.items.length == ready.length) {
-						Projectors.items.forEach((projector) => projector.emit('pause'));
-						clearInterval(interval);
-					}
-				}, 10);
-			}
+			if (name == 'all')
+				Projectors.items.forEach((projector) => projector.emit('pause'));
 			else {
 				let projector = Projectors.find(Projector.validator(name));
 
@@ -112,16 +96,8 @@ io.on('new', (socket: Socket) => {
 		});
 		Angular.on('stop', (name: String) => {
 			Debug.log('angular ask ' + name + ' to stop');
-			if (name == 'all') {
-				let interval = setInterval(() => {
-					let ready = Projectors.items.filter((projector) => projector.status.loaded == true);
-
-					if (Projectors.items.length == ready.length) {
-						Projectors.items.forEach((projector) => projector.emit('stop'));
-						clearInterval(interval);
-					}
-				}, 10);
-			}
+			if (name == 'all')
+				Projectors.items.forEach((projector) => projector.emit('stop'));
 			else {
 				let projector = Projectors.find(Projector.validator(name));
 

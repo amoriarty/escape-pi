@@ -130,11 +130,3 @@ socket.on('select', (video: String) => {
 	status.playing = player.playing;
 	socket.status = status;
 });
-
-/**
- * When load status change.
- */
-player.on('loaded', () => {
-	status.loaded = false;
-	socket.status = status;
-});

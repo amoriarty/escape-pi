@@ -1,16 +1,10 @@
-import * as Events from 'events';
 import Debug from '../tools/debug.class';
 import Omx from './omx.class';
 
-export default class Player extends Events.EventEmitter {
+export default class Player {
 	private _omx = new Omx();
 	private _playing: Boolean = false;
 	private _path: String;
-
-	constructor() {
-		super();
-		this._omx.on('loaded', () => this.emit('loaded'));
-	}
 
 	/**
 	 * Accessor to know if omx is load and ready to interact.
@@ -32,8 +26,7 @@ export default class Player extends Events.EventEmitter {
 	 */
 	public set video(path: String) {
 		this._path = path;
-		if (this.playing) this.stop();
-		else this._load();
+		this.stop();
 	}
 
 	/**
@@ -61,8 +54,8 @@ export default class Player extends Events.EventEmitter {
 	 * In this case, player will reload video.
 	 */
 	public stop() {
-		if (!this._omx.loaded) return ;
 		this._playing = false;
+		this._omx.quit();
 		this._load();
 	}
 
