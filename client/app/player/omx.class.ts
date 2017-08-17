@@ -2,6 +2,13 @@ import Debug from '../tools/debug.class';
 import * as ChildProcess from 'child_process';
 import * as Events from 'events';
 
+const args = [
+	"-o",
+	"hdmi",
+	"--blank",
+	"--no-osd"
+];
+
 export default class Omx extends Events.EventEmitter {
 	private _process: ChildProcess.ChildProcess;
 	private _loadState: Boolean = false;
@@ -41,7 +48,7 @@ export default class Omx extends Events.EventEmitter {
 	public set load(path: String) {
 		if (this._process)
 			this.quit();
-		this._process = ChildProcess.spawn('omxplayer', [ path as string ], {});
+		this._process = ChildProcess.spawn('omxplayer', [ path as string, ...args ], { detached: false });
 		this.pause();
 		this._loaded = true;
 	}

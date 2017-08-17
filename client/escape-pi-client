@@ -73,6 +73,7 @@ export NODE_ENV="development"
 export SOCKET_URL="http://theroom.local"
 export PI_NAME="yharnam"
 export VIDEOS_PATH="/home/pi/Videos"
+export DOOR_TRIGGER="true"
  
 start() {
     echo "Starting $NAME"

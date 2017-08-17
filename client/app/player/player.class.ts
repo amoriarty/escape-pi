@@ -63,10 +63,6 @@ export default class Player extends Events.EventEmitter {
 	public stop() {
 		if (!this._omx.loaded) return ;
 		this._playing = false;
-		if (!this._path) {
-			this._omx.quit();
-			return ;
-		}
 		this._load();
 	}
 
