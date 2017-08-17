@@ -1,10 +1,16 @@
+import * as Events from 'events';
 import Debug from '../tools/debug.class';
 import Omx from './omx.class';
 
-export default class Player {
+export default class Player extends Events.EventEmitter {
 	private _omx = new Omx();
 	private _playing: Boolean = false;
 	private _path: String;
+
+	constructor() {
+		super();
+		this._omx.on('loaded', () => this.emit('loaded'));
+	}
 
 	/**
 	 * Accessor to know if omx is load and ready to interact.

@@ -30,6 +30,7 @@ export default class Projector extends Events.EventEmitter {
 		this._socket.on('whoareyou', (name) => this._onWhoAreYou(name));
 		this._socket.on('status', (status) => this._onStatus(status));
 		this._socket.on('videos', (videos) => this._videos = videos);
+		this._socket.on('loaded', (loaded) => this._status.loaded = loaded);
 		this._status.connected = true;
 		Debug.log('new projector connected');
 	}

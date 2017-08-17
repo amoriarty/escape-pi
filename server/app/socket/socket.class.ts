@@ -69,6 +69,7 @@ export default class Socket extends EventEmitter {
 				this._socket.on('whoareyou', (name) => this.emit('whoareyou', name));
 				this._socket.on('status', (status) => this.emit('status', status));
 				this._socket.on('videos', (videos) => this.emit('videos', videos));
+				this._socket.on('loaded', (loaded) => this.emit('loaded', loaded));
 				this.emit('new_raspberry');
 				break ;
 		}

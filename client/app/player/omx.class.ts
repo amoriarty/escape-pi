@@ -1,9 +1,10 @@
 import Debug from '../tools/debug.class';
 import * as ChildProcess from 'child_process';
+import * as Events from 'events';
 
-export default class Omx {
+export default class Omx extends Events.EventEmitter {
 	private _process: ChildProcess.ChildProcess;
-	private _loaded = false;
+	private _loadState: Boolean = false;
 
 	/**
 	 * Play / Pause omx.
@@ -24,14 +25,14 @@ export default class Omx {
 	 */
 	public quit() {
 		this._write('q');
-		this._loaded = false;
+		this._loadState = false;
 	}
 
 	/**
 	 * Accessor for load status.
 	 */
 	public get loaded() {
-		return this._loaded;
+		return this._loadState;
 	}
 
 	/**
@@ -43,6 +44,11 @@ export default class Omx {
 		this._process = ChildProcess.spawn('omxplayer', [ path as string ], {});
 		this.pause();
 		this._loaded = true;
+	}
+
+	private set _loaded(value: Boolean) {
+		this._loadState = value;
+		this.emit('loaded');
 	}
 
 	/**
