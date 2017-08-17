@@ -16,7 +16,7 @@ export default class Player {
 	/**
 	 * Accessor to know if omx is actually playing or not.
 	 */
-	public get playling(): Boolean {
+	public get playing(): Boolean {
 		return this._playing;
 	}
 
@@ -26,7 +26,8 @@ export default class Player {
 	 */
 	public set video(path: String) {
 		this._path = path;
-		this._load();
+		if (this.playing) this.stop();
+		else this._load();
 	}
 
 	/**
@@ -34,7 +35,7 @@ export default class Player {
 	 */
 	public play() {
 		if (!this._omx.loaded) return ;
-		if (this.playling) return ;
+		if (this.playing) return ;
 		this._omx.play();
 		this._playing = true;
 	}
@@ -44,7 +45,7 @@ export default class Player {
 	 */
 	public pause() {
 		if (!this._omx.loaded) return ;
-		if (!this.playling) return ;
+		if (!this.playing) return ;
 		this._omx.pause();
 		this._playing = false;
 	}

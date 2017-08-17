@@ -40,7 +40,8 @@
 				"NODE_ENV": "development",
 				"SOCKET_URL": "http://localhost:8080",
 				"PI_NAME": "yharnam",
-				"VIDEOS_PATH": "/tmp/videos"
+				"VIDEOS_PATH": "/tmp/videos",
+				"DOOR_TRIGGER": "true"
 			},
 			"outFiles": [
 				"${workspaceRoot}/client/build/app.js"
@@ -61,7 +62,8 @@
 				"NODE_ENV": "development",
 				"SOCKET_URL": "http://localhost:8080",
 				"PI_NAME": "lothric",
-				"VIDEOS_PATH": "/tmp/videos"
+				"VIDEOS_PATH": "/tmp/videos",
+				"DOOR_TRIGGER": "false"
 			},
 			"outFiles": [
 				"${workspaceRoot}/client/build/app.js"
@@ -82,7 +84,8 @@
 				"NODE_ENV": "development",
 				"SOCKET_URL": "http://localhost:8080",
 				"PI_NAME": "boletaria",
-				"VIDEOS_PATH": "/tmp/videos"
+				"VIDEOS_PATH": "/tmp/videos",
+				"DOOR_TRIGGER": "false"
 			},
 			"outFiles": [
 				"${workspaceRoot}/client/build/app.js"
