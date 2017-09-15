@@ -1,6 +1,6 @@
 <!-- Top navigation bar. -->
-<md-toolbar color="primary">
-  <span>{{ title }}</span>
+<md-toolbar>
+  <img src="assets/logo.png" alt="The Room Logo" class="logo">
   <span class="fill-space"></span>
   <span>
     <app-selector [placeholder]="'Playlist'"
@@ -19,4 +19,4 @@
 </md-grid-list>
 
 <!-- Add playlist button -->
-<button md-fab color="primary" (click)="playlistPopup()"><md-icon>add</md-icon></button>
+<button md-fab (click)="playlistPopup()"><md-icon>add</md-icon></button>

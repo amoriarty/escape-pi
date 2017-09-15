@@ -1,12 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/purple-green.css";
-
 /* Material Icons */
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(materialicons.ttf) format('truetype');
+  src: url(assets/fonts/materialicons.ttf) format('truetype');
 }
 
 .material-icons {
@@ -23,6 +20,27 @@
   direction: ltr;
 }
 
+/* Gotham Font */
+@font-face {
+  font-family: 'GothamBook';
+  src: url(assets/fonts/gotham-book.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'GothamExtraLigth';
+  src: url(assets/fonts/gotham-extralight.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'GothamLight';
+  src: url(assets/fonts/gotham-light.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'GothamMedium';
+  src: url(assets/fonts/gotham-medium.ttf) format('truetype');
+}
+
 body {
-  font-family: Roboto, Novo, Arial, Helvetica, sans-serif;
+  font-family: GothamMedium, GothamLight, GothamExtraLigth, GothamBook, Roboto, Novo, Arial, Helvetica, sans-serif;
 }
