@@ -89,7 +89,10 @@ export class AppComponent implements OnInit, OnDestroy {
   reboot() {
     this._projectors.toArray()
       .reverse()
-      .forEach((item) => item.reboot());
+      .forEach((item) => {
+        item.status.connected = false;
+        item.reboot();
+      });
   }
 
   /**
@@ -99,6 +102,9 @@ export class AppComponent implements OnInit, OnDestroy {
   shutdown() {
     this._projectors.toArray()
       .reverse()
-      .forEach((item) => item.shutdown());
+      .forEach((item) => {
+        item.status.connected = false;
+        item.shutdown();
+      });
   }
 }
