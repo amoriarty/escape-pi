@@ -75,15 +75,13 @@ build
 /server/public/node_modules
 
 # IDEs and editors
-/server/public/.idea
+.idea
 .project
 .classpath
 .c9/
 *.launch
 .settings/
 *.sublime-workspace
-
-# IDE - VSCode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
