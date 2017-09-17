@@ -3,7 +3,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ProjectorService } from './projector.service';
 import { ProjectorStatusInterface } from './projector.interface';
 import { PlaylistService } from '../playlist/playlist.service';
-import { PlayerCommand } from '../player/player.interface';
+import { PlayerCommandInterface } from '../player/player.interface';
 import { PlayerService } from '../player/player.service';
 import { TimerComponent } from '../timer/timer.component';
 
@@ -66,21 +66,20 @@ export class ProjectorComponent implements OnInit {
 
   /**
    * Recieved input from player component.
-   * @param input PlayerCommand
+   * @param input PlayerCommandInterface
    */
-  playerCommand(input: PlayerCommand) {
+  playerCommand(input: PlayerCommandInterface) {
     switch (input) {
-      case PlayerCommand.PLAY:
+      case PlayerCommandInterface.PLAY:
         this._timer.start();
         this._paused = false;
-        // this._playerService.play(this.name);
         break;
-      case PlayerCommand.PAUSE:
+      case PlayerCommandInterface.PAUSE:
         this._playerService.pause(this.name);
         this._paused = true;
         this._timer.pause();
         break;
-      case PlayerCommand.STOP:
+      case PlayerCommandInterface.STOP:
         this._playerService.stop(this.name);
         this._paused = false;
         this._timer.stop();

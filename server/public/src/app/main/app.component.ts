@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChildren, QueryList } from '@angular/core';
 import { MdDialog } from '@angular/material';
+
+import { PlayerCommandInterface } from '../player/player.interface';
+
 import { PlaylistComponent } from '../playlist/playlist.component';
+import { ProjectorComponent } from '../projector/projector.component';
 import { PlaylistService } from '../playlist/playlist.service';
 import { PlaylistInterface } from '../playlist/playlist.interface';
-import { PlayerService } from '../player/player.service';
-import { PlayerCommand } from '../player/player.interface';
 
 
 @Component({
@@ -13,9 +15,10 @@ import { PlayerCommand } from '../player/player.interface';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Escape Pi';
-  playlists: PlaylistInterface[] = [];
+  @ViewChildren(ProjectorComponent)
+  private _projectors: QueryList<ProjectorComponent>;
   private _playlist: PlaylistInterface;
+  playlists: PlaylistInterface[] = [];
 
   /**
    * Subscribe to server playlists.
@@ -23,7 +26,6 @@ export class AppComponent {
   constructor(
     public dialog: MdDialog,
     private _playlistsService: PlaylistService,
-    private _playerService: PlayerService
   ) {
     this._playlistsService.playlists
     .subscribe((playlists: PlaylistInterface[]) => {
@@ -35,29 +37,22 @@ export class AppComponent {
    * To pass a String array to app-selector
    */
   get names() {
-    let result = [];
+    const result = [];
 
-    for (let playlist of this.playlists)
+    for (const playlist of this.playlists) {
       result.push(playlist.name);
+    }
     return result;
   }
 
   /**
    * Function send to the player.
-   * @param input It's a PlayerCommand with value PLAY, PAUSE or STOP
+   * @param input It's a PlayerCommandInterface with value PLAY, PAUSE or STOP
    */
-  playerCommand(input: PlayerCommand) {
-    switch (input) {
-      case PlayerCommand.PLAY:
-        this._playerService.play('all');
-        break ;
-      case PlayerCommand.PAUSE:
-        this._playerService.pause('all');
-        break ;
-      case PlayerCommand.STOP:
-        this._playerService.stop('all');
-        break ;
-    }
+  playerCommand(input: PlayerCommandInterface) {
+    this._projectors.forEach((item) => {
+      item.playerCommand(input);
+    });
   }
 
   /**
@@ -72,8 +67,8 @@ export class AppComponent {
    * @param name Name of selected playlist
    */
   select(name: String) {
-    for (let playlist of this.playlists) {
-      if (playlist.name == name) {
+    for (const playlist of this.playlists) {
+      if (playlist.name === name) {
         this._playlist = playlist;
         break ;
       }

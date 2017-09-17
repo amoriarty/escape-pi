@@ -1,7 +1,7 @@
 /**
  * The 3 possible command for player.
  */
-export enum PlayerCommand {
+export enum PlayerCommandInterface {
   PLAY,
   PAUSE,
   STOP
