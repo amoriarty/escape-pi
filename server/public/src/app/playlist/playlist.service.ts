@@ -9,9 +9,9 @@ import { ProjectorComponent } from '../projector/projector.component';
 export class PlaylistService {
   private _projectors: ProjectorComponent[] = [];
   private _selection: PlaylistInterface = {
-    name: "",
+    name: '',
     videos: []
-  }
+  };
 
   constructor(private _socketService: SocketService) { }
 
@@ -19,8 +19,9 @@ export class PlaylistService {
    * Function to save the current selection.
    */
   save() {
-    if (this._selection.name == "" || this._selection.videos.length == 0)
+    if (this._selection.name === '' || this._selection.videos.length === 0) {
       return ;
+    }
     this._socketService.send(EventsEnum.PLAYLIST, this._selection);
   }
 
@@ -28,7 +29,7 @@ export class PlaylistService {
    * Accessor to playlists observable.
    */
   get playlists(): Observable<PlaylistInterface[]> {
-    let observable = new Observable((observer: Observer<PlaylistInterface[]>) => {
+    const observable = new Observable((observer: Observer<PlaylistInterface[]>) => {
       this._socketService.emitter.on('playlists', (data: PlaylistInterface[]) => {
         observer.next(data);
       });
@@ -49,8 +50,8 @@ export class PlaylistService {
    * @param video selected video.
    */
   set selected(video: VideoInterface) {
-    for (let item of this._selection.videos) {
-      if (item.name == video.name) {
+    for (const item of this._selection.videos) {
+      if (item.name === video.name) {
         item.title = video.title;
         this._socketService.send(EventsEnum.SELECT, video);
         return ;
@@ -65,9 +66,9 @@ export class PlaylistService {
    */
   set playlist(selected: PlaylistInterface) {
     this._selection = selected;
-    for (let projector of this._projectors) {
-      for (let video of this._selection.videos) {
-        if (projector.name == video.name) {
+    for (const projector of this._projectors) {
+      for (const video of this._selection.videos) {
+        if (projector.name === video.name) {
           projector.select(video.title);
           break ;
         }

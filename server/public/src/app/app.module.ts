@@ -16,6 +16,7 @@ import { PlayerService } from './player/player.service';
 import { PlaylistService } from './playlist/playlist.service';
 import { ProjectorService } from './projector/projector.service';
 import { CapitalizePipe } from './tools/capitalize.pipe';
+import { TimerComponent } from './timer/timer.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { CapitalizePipe } from './tools/capitalize.pipe';
     LedComponent,
     PlaylistComponent,
     CapitalizePipe,
-    SelectorComponent
+    SelectorComponent,
+    TimerComponent
   ],
   imports: [
     BrowserModule,
