@@ -9,7 +9,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   @Input() start_count: number = -10;
   @Output() zero = new EventEmitter<null>();
   private _count: number;
-  private _interval;
+  private _interval = null;
   private _running = false;
 
   constructor() {}
@@ -31,28 +31,28 @@ export class TimerComponent implements OnInit, OnDestroy {
   }
 
   start() {
-    if (this._running === true) {
-      this._running = false;
+    if (this._interval != null && this._running === false) {
+      this._running = true;
     } else {
-      this._interval = setInterval(() => this.handler(), 1000);
+      this._running = true;
+      this._interval = setInterval(() => {
+        if (this._running === true) {
+          this._count += 1;
+          if (this._count === 0) {
+            this.zero.emit();
+          }
+        }
+      }, 1000);
     }
   }
 
   pause() {
-    this._running = true;
+    this._running = false;
   }
 
   stop() {
     clearInterval(this._interval);
+    this._interval = null;
     this._count = this.start_count;
-  }
-
-  private handler() {
-    if (this._running === true) {
-      this._count += 1;
-      if (this._count === 0) {
-        this.zero.emit();
-      }
-    }
   }
 }
