@@ -4,17 +4,15 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import 'hammerjs';
 
-import { MaterialModule } from './material.module';
-import { AppComponent } from './main/app.component';
+import { MaterialModule } from './tools/material.module';
+import { AppComponent } from './app.component';
 import { PlayerComponent } from './player/player.component';
 import { ProjectorComponent } from './projector/projector.component';
 import { LedComponent } from './led/led.component';
 import { PlaylistComponent } from './playlist/playlist.component';
 import { SelectorComponent } from './selector/selector.component';
 import { SocketService } from './tools/socket.service';
-import { PlayerService } from './player/player.service';
 import { PlaylistService } from './playlist/playlist.service';
-import { ProjectorService } from './projector/projector.service';
 import { CapitalizePipe } from './tools/capitalize.pipe';
 import { TimerComponent } from './timer/timer.component';
 
@@ -40,9 +38,7 @@ import { TimerComponent } from './timer/timer.component';
   ],
   providers: [
     SocketService,
-    PlayerService,
     PlaylistService,
-    ProjectorService
   ],
   bootstrap: [ AppComponent ]
 })

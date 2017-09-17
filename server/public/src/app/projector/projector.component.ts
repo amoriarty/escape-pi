@@ -1,67 +1,67 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-
-import { ProjectorService } from './projector.service';
+import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { ProjectorStatusInterface } from './projector.interface';
-import { PlaylistService } from '../playlist/playlist.service';
 import { PlayerCommandInterface } from '../player/player.interface';
-import { PlayerService } from '../player/player.service';
+import { SocketService } from '../tools/socket.service';
+import { PlaylistService } from '../playlist/playlist.service';
 import { TimerComponent } from '../timer/timer.component';
+
 
 @Component({
   selector: 'app-projector',
   templateUrl: './projector.component.html',
   styleUrls: ['./projector.component.scss'],
 })
-export class ProjectorComponent implements OnInit {
+export class ProjectorComponent implements OnInit, OnDestroy {
   @ViewChild(TimerComponent) private _timer: TimerComponent;
-  @Input() name: String;
+  @Input() name: string;
+  private _subscriptions: Subscription[] = [];
   status: ProjectorStatusInterface = {
     name: this.name,
     connected: false,
     playing: false
   };
-  videos: String[] = [];
-  video: String;
-  private _paused = true;
+  videos: string[] = [];
+  video: string;
 
-  constructor(private _playerService: PlayerService,
-              private _projectorService: ProjectorService,
-              private _playlistService: PlaylistService) {}
+  constructor(private _socket: SocketService, private _playlist: PlaylistService) {}
 
   /**
    * Subscribe to status and videos.
    */
   ngOnInit() {
-    this._playlistService.projector = this;
-    this._projectorService.status(this.name)
-    .subscribe((status) => this._onStatusChange(status));
-    this._projectorService.videos(this.name)
-    .subscribe((videos) => this.videos = videos.videos);
+    this._subscriptions.push(this._socket.status(this.name)
+      .subscribe((status) => this._onStatusChange(status)));
+    this._subscriptions.push(this._socket.videos(this.name)
+      .subscribe((videos) => this.videos = videos.videos));
   }
 
-  private _onStatusChange(status) {
-    this.status = status;
-    if (this.status.playing === false && this._paused === false) {
-      this._timer.stop();
-    }
+  /**
+   * Unsubscribe from all subscription
+   */
+  ngOnDestroy() {
+    this._subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  timerZero() {
-    this._playerService.play(this.name);
+  /**
+   * When timer countdown is zero, launch send videos play signal.
+   */
+  zero() {
+    this._socket.play(this.name);
   }
 
   /**
    * Received reboot input and ask to projector service.
    */
   reboot() {
-    this._projectorService.reboot(this.name);
+    this._socket.reboot(this.name);
   }
 
   /**
    * Received shutdown input and ask to projector service.
    */
   shutdown() {
-    this._projectorService.shutdown(this.name);
+    this._socket.shutdown(this.name);
   }
 
   /**
@@ -69,21 +69,20 @@ export class ProjectorComponent implements OnInit {
    * @param input PlayerCommandInterface
    */
   playerCommand(input: PlayerCommandInterface) {
-    switch (input) {
-      case PlayerCommandInterface.PLAY:
-        this._timer.start();
-        this._paused = false;
-        break;
-      case PlayerCommandInterface.PAUSE:
-        this._playerService.pause(this.name);
-        this._paused = true;
-        this._timer.pause();
-        break;
-      case PlayerCommandInterface.STOP:
-        this._playerService.stop(this.name);
-        this._paused = false;
-        this._timer.stop();
-        break;
+    if (this.status.connected) {
+      switch (input) {
+        case PlayerCommandInterface.PLAY:
+          this._timer.start();
+          break;
+        case PlayerCommandInterface.PAUSE:
+          this._socket.pause(this.name);
+          this._timer.pause();
+          break;
+        case PlayerCommandInterface.STOP:
+          this._socket.stop(this.name);
+          this._timer.stop();
+          break;
+      }
     }
   }
 
@@ -91,11 +90,27 @@ export class ProjectorComponent implements OnInit {
    * Function call by app-selector.
    * @param item Selected video.
    */
-  select(item: String) {
-    this.video = item;
-    this._playlistService.selected = {
+  select(item: string) {
+    const inter = {
       name: this.name,
-      title: this.video
+      title: item
     };
+
+    this.video = item;
+    this._playlist.select = inter;
+    this._socket.select(inter);
+  }
+
+  /**
+   * Assigne status to class.
+   * Also stop timer when playing status was set to false by client.
+   * @param status
+   * @private
+   */
+  private _onStatusChange(status) {
+    this.status = status;
+    if (this.status.playing === false && this._timer.running === true) {
+      this._timer.stop();
+    }
   }
 }

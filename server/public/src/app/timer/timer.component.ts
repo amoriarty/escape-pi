@@ -10,7 +10,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   @Output() zero = new EventEmitter<null>();
   private _count: number;
   private _interval;
-  private _pause = false;
+  private _running = false;
 
   constructor() {}
 
@@ -26,23 +26,20 @@ export class TimerComponent implements OnInit, OnDestroy {
     return this._count;
   }
 
+  get running() {
+    return this._running;
+  }
+
   start() {
-    if (this._pause === true) {
-      this._pause = false;
-      return ;
+    if (this._running === true) {
+      this._running = false;
+    } else {
+      this._interval = setInterval(() => this.handler(), 1000);
     }
-    this._interval = setInterval(() => {
-      if (this._pause === false) {
-        this._count += 1;
-        if (this._count === 0) {
-          this.zero.emit();
-        }
-      }
-    }, 1000);
   }
 
   pause() {
-    this._pause = true;
+    this._running = true;
   }
 
   stop() {
@@ -50,4 +47,12 @@ export class TimerComponent implements OnInit, OnDestroy {
     this._count = this.start_count;
   }
 
+  private handler() {
+    if (this._running === true) {
+      this._count += 1;
+      if (this._count === 0) {
+        this.zero.emit();
+      }
+    }
+  }
 }

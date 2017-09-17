@@ -3,8 +3,8 @@
  * and title the name of video.
  */
 export interface VideoInterface {
-  name: String,
-  title: String
+  name: string;
+  title: string;
 }
 
 
@@ -12,6 +12,6 @@ export interface VideoInterface {
  * Type playlist interface where name is the name of the playlist.
  */
 export interface PlaylistInterface {
-  name: String,
-  videos: VideoInterface[]
+  name: string;
+  videos: VideoInterface[];
 }

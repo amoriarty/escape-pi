@@ -2,15 +2,15 @@
  * Type interface of projector status.
  */
 export interface ProjectorStatusInterface {
-  name: String,
-  connected: Boolean,
-  playing: Boolean
+  name: string;
+  connected: boolean;
+  playing: boolean;
 }
 
 /**
  * Type interface for received list of raspberry videos.
  */
 export interface ProjectorVideosInterface {
-  name: String,
-  videos: String[]
+  name: string;
+  videos: string[];
 }

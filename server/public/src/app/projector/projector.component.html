@@ -1,7 +1,7 @@
 <!-- Projector name -->
 <div class="title">{{ name | capitalize }}</div>
-<button md-icon-button (click)="shutdown()"><md-icon>power_settings_new</md-icon></button>
 <button md-icon-button (click)="reboot()"><md-icon>autorenew</md-icon></button>
+<button md-icon-button (click)="shutdown()"><md-icon>power_settings_new</md-icon></button>
 
 <!-- Status contents. -->
 <div>
@@ -25,5 +25,5 @@
 </div>
 
 <div class="timer">
-  <app-timer (zero)="timerZero()"></app-timer>
+  <app-timer (zero)="zero()"></app-timer>
 </div>
