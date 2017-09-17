@@ -73,9 +73,6 @@ export class ProjectorComponent implements OnInit, OnDestroy {
       switch (input) {
         case PlayerCommandInterface.PLAY:
           this._timer.start();
-          if (this._timer.count > 0) {
-            this._socket.play(this.name);
-          }
           break;
         case PlayerCommandInterface.PAUSE:
           this._socket.pause(this.name);

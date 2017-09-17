@@ -53,15 +53,15 @@
 # Forever settings to prevent the application spinning if it fails on launch.
 # MIN_UPTIME="5000"
 # SPIN_SLEEP_TIME="2000"
- 
+
 NAME="escape-pi-server"
 NODE_BIN_DIR="/home/pi/.config/yarn/global/node_modules/.bin"
 NODE_PATH="/home/pi/.config/yarn/global/node_modules/"
 APPLICATION_PATH="/home/pi/escape-pi/server/build/app.js"
 PIDFILE="/var/run/escape-pi-server.pid"
 LOGFILE="/var/log/escape-pi-server.log"
-MIN_UPTIME=""
-SPIN_SLEEP_TIME=""
+MIN_UPTIME="1000"
+SPIN_SLEEP_TIME="1000"
 
 # Add node to the path for situations in which the environment is passed.
 PATH=$NODE_BIN_DIR:$PATH

@@ -33,7 +33,10 @@ export class TimerComponent implements OnInit, OnDestroy {
   start() {
     if (this._interval != null && this._running === false) {
       this._running = true;
-    } else {
+      if (this._count >= 0) {
+        this.zero.emit();
+      }
+    } else if (this._interval === null) {
       this._running = true;
       this._interval = setInterval(() => {
         if (this._running === true) {

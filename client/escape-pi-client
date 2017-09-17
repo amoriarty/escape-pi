@@ -60,8 +60,8 @@ NODE_PATH="/home/pi/.config/yarn/global/node_modules/"
 APPLICATION_PATH="/home/pi/escape-pi/client/build/app.js"
 PIDFILE="/var/run/escape-pi-client.pid"
 LOGFILE="/var/log/escape-pi-client.log"
-MIN_UPTIME=""
-SPIN_SLEEP_TIME=""
+MIN_UPTIME="1000"
+SPIN_SLEEP_TIME="1000"
 
 # Add node to the path for situations in which the environment is passed.
 PATH=$NODE_BIN_DIR:$PATH
@@ -113,6 +113,7 @@ stop() {
         # Get rid of the pidfile, since Forever won't do that.
         rm -f $PIDFILE
         RETVAL=$?
+        killall omxplayer.bin
     else
         echo "$NAME is not running."
         RETVAL=0
