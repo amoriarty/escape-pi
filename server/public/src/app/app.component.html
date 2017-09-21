@@ -8,6 +8,7 @@
                   (selected)="select($event)">
     </app-selector>
     <button md-icon-button (click)="add()"><md-icon>add</md-icon></button>
+    <button md-icon-button (click)="remove()"><md-icon>remove</md-icon></button>
     <app-player (onCommand)="player($event)"></app-player>
     <button md-icon-button (click)="reboot()"><md-icon>autorenew</md-icon></button>
     <button md-icon-button (click)="shutdown()"><md-icon>power_settings_new</md-icon></button>

@@ -11,7 +11,7 @@ import { PlaylistService } from './playlist.service';
 export class PlaylistComponent implements OnInit {
   name = "";
 
-  constructor(public dialog: MdDialog, private _playlistService: PlaylistService) { }
+  constructor(public dialog: MdDialog, private _playlist: PlaylistService) { }
   ngOnInit() { }
 
   /**
@@ -20,8 +20,8 @@ export class PlaylistComponent implements OnInit {
   save() {
     if (this.name == "")
       return ;
-    this._playlistService.name = this.name;
-    this._playlistService.save();
+    this._playlist.name = this.name;
+    this._playlist.save();
     this.dialog.closeAll();
   }
 }

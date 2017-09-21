@@ -108,6 +108,10 @@ io.on('new', (socket: Socket) => {
 		Angular.on('playlist', (playlist: PlaylistInterface) => {
 			Playlists.playlist = playlist;
 		});
+		Angular.on('delete', (playlist: PlaylistInterface) => {
+			console.log('delete', playlist);
+			Playlists.deletePlaylist(playlist);
+		});
 		Angular.on('select', (video: VideoInterface) => {
 			let projector = Projectors.find(Projector.validator(video.name));
 

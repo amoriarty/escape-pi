@@ -68,6 +68,10 @@ export class SocketService {
     this._socket.emit('playlist', playlist);
   }
 
+  remove(playlist: PlaylistInterface) {
+    this._socket.emit('delete', playlist);
+  }
+
   reboot(name: string) {
     this._socket.emit('reboot', name);
   }

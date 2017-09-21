@@ -1,10 +1,11 @@
-import { Component, ViewChildren, QueryList, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList, OnInit, OnDestroy } from '@angular/core';
 import { MdDialog } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
 import { PlayerCommandInterface } from './player/player.interface';
 
 import { SocketService } from './tools/socket.service';
+import { PlaylistService } from './playlist/playlist.service';
 
 import { PlaylistComponent } from './playlist/playlist.component';
 import { ProjectorComponent } from './projector/projector.component';
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private _subscription: Subscription;
   playlists: PlaylistInterface[] = [];
 
-  constructor(public dialog: MdDialog, private _socket: SocketService) {
+  constructor(public dialog: MdDialog, private _socket: SocketService, private _playlist: PlaylistService) {
   }
 
   /**
@@ -69,16 +70,26 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Will delete the selected playlists.
+   */
+  remove() {
+    this._projectors.forEach((projector) => projector.select(''));
+    this._playlist.remove();
+  }
+
+  /**
    * Function call when a selection is done on app-selector.
    * @param name Name of selected playlist
    */
   select(name: string) {
     const playlist = this.playlists.find((item) => item.name === name);
 
+    this._playlist.name = name;
     this._projectors.forEach((projector) => {
       const video = playlist.videos.find((item) => item.name === projector.name);
 
-      projector.select(video.title);
+      if (video)
+          projector.select(video.title);
     });
   }
 

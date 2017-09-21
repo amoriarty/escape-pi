@@ -6,7 +6,7 @@ import { PlaylistInterface } from './playlist.interface';
 
 export default class Playlist extends Events.EventEmitter {
 	private _collection: mongodb.Collection;
-	private _playlists: PlaylistInterface[];
+	private _playlists: PlaylistInterface[] = [];
 
 	constructor() {
 		super();
@@ -25,7 +25,7 @@ export default class Playlist extends Events.EventEmitter {
 	 * Accessor for all playlists.
 	 */
 	public get playlists(): PlaylistInterface[] {
-		return this._playlists || null;
+		return this._playlists;
 	}
 
 	/**
@@ -42,50 +42,24 @@ export default class Playlist extends Events.EventEmitter {
 			}
 		});
 	}
+
+	public deletePlaylist(playlist: PlaylistInterface) {
+		this._collection.deleteOne(playlist, (err) => {
+			if (err)
+				Debug.error('playlist wasn\'t deleted: ' + err);
+			else {
+				let swap: PlaylistInterface[] = [];
+
+				for (let item of this._playlists) {
+					if (playlist.name != item.name)
+						swap.push(item);
+				}
+				this._playlists = swap;
+				console.log('new playlists', this._playlists);
+				this.emit('playlists');
+				Debug.log('playlist ' + playlist.name + ' succesfully deleted');
+			}
+		});
+	}
 }
 
-// export default class Playlist extends Socket {
-// 	private playlists: PlaylistInterface[] = [];
-// 	private MongoClient = new mongodb.MongoClient();
-// 	private collection: mongodb.Collection;
-
-// 	constructor(socket) {
-// 		super(socket);
-// 		this.MongoClient.connect(Environment.mongodb_url as string, (err, db) => {
-// 			if (!err) {
-// 				Debug.log("mongodb connected");
-// 				this.collection = db.collection('playlist');
-// 				this.getDatabasePlaylists();
-// 			}
-// 			else Debug.error(err);
-// 		});
-// 		this.socket.on('playlist', (playlist: PlaylistInterface) => {
-// 			this.savePlaylist(playlist);
-// 		});
-// 	}
-
-// 	private savePlaylist(playlist: PlaylistInterface) {
-// 		this.collection.insertOne(playlist, (err, result) => {
-// 			if (!err) {
-// 				Debug.log('playlist saved:', playlist);
-// 				this.playlists.push(playlist);
-// 				this.emitPlaylists();
-// 			}
-// 			else Debug.error(err);
-// 		});
-// 	}
-
-// 	private emitPlaylists() {
-// 		this.socket.emit('playlist', this.playlists);
-// 	}
-
-// 	private getDatabasePlaylists() {
-// 		this.collection.find({}).toArray((err, docs) => {
-// 			if (!err) {
-// 				this.playlists = docs;
-// 				this.emitPlaylists();
-// 			}
-// 			else Debug.error(err);
-// 		});
-// 	}
-// }

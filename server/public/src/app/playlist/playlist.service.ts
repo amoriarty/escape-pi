@@ -21,6 +21,16 @@ export class PlaylistService {
   }
 
   /**
+   * Will remove selected playlist.
+   */
+  remove() {
+    if (this._selection.name != '') {
+      this._socket.remove(this._selection);
+      this._selection = { name: '', videos: [] }
+    }
+  }
+
+  /**
    * Accessor for selection name;
    */
   set name(name: string) {

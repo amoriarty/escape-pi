@@ -61,6 +61,7 @@ export default class Socket extends EventEmitter {
 				this._socket.on('shutdown', (name) => this.emit('shutdown', name));
 				this._socket.on('reboot', (name) => this.emit('reboot', name));
 				this._socket.on('playlist', (playlist) => this.emit('playlist', playlist));
+                this._socket.on('delete', (playlist) => this.emit('delete', playlist));
 				this._socket.on('select', (video) => this.emit('select', video));
 				this.emit('new_angular');
 				break ;
