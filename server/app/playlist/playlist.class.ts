@@ -44,7 +44,7 @@ export default class Playlist extends Events.EventEmitter {
 	}
 
 	public deletePlaylist(playlist: PlaylistInterface) {
-		this._collection.deleteOne(playlist, (err) => {
+		this._collection.deleteOne({ name: playlist.name }, (err) => {
 			if (err)
 				Debug.error('playlist wasn\'t deleted: ' + err);
 			else {
@@ -55,7 +55,6 @@ export default class Playlist extends Events.EventEmitter {
 						swap.push(item);
 				}
 				this._playlists = swap;
-				console.log('new playlists', this._playlists);
 				this.emit('playlists');
 				Debug.log('playlist ' + playlist.name + ' succesfully deleted');
 			}
